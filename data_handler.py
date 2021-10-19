@@ -34,3 +34,7 @@ def delete_question_by_id(question_id):
 def edit_question(question):
     pass
 
+
+def delete_answer(answer_id):
+    pass
+
