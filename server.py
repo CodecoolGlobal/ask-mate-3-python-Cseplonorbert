@@ -69,5 +69,17 @@ def question_vote_down(question_id):
     return redirect("/question/<question_id>")
 
 
+@app.route("/answer/<answer_id>/vote_up", methods=["GET"])
+def answer_vote_up(answer_id):
+    data_handler.vote_up_answer(answer_id)
+    return redirect("/question/<question_id>")
+
+
+@app.route("/answer/<answer_id>/vote_down", methods=["GET"])
+def answer_vote_down(answer_id):
+    data_handler.vote_down_answer(answer_id)
+    return redirect("/question/<question_id>")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
