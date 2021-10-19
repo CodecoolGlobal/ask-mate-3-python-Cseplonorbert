@@ -34,5 +34,12 @@ def add_new_answer(question_id):
     return redirect("/question/<question_id>")
 
 
+@app.route("/question/<question_id>/delete", methods = ["GET"])
+def delete_question(question_id):
+    if request.method == 'GET':
+        data_handler.delete_question_by_id(question_id)
+        return redirect('/list')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
