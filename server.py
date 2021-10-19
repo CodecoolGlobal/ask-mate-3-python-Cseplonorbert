@@ -15,10 +15,12 @@ def display_question(question_id):
     return render_template("question.html", question=question)
 
 
-@app.route("/add-question", methods=["GET", "POST"])
+@app.route("/add_question", methods=["GET", "POST"])
 def add_question():
     if request.method == "POST":
-        question = request.form
+        question = dict()
+        question['title'] = request.form['title']
+        question['message'] = request.form['message']   
         data_handler.add_question(question)
         return redirect('/list')
     elif request.method == "GET":
