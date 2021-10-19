@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ask mate 1</title>
+</head>
+<body>
+    <h1>Ask Mate</h1>
+
+    <a href="/question">Add new question</a>
+
+    <table width="100%">
+        <th width="20px">ID</th>
+        <th width="120px">Submission Time</th>
+        <th width="100px">View number</th>
+        <th width="100px">Vote number</th>
+        <th width="10%">Title</th>
+        <th>Message</th>
+
+        {% for question in questions %}
+            <tr>
+                {% for key, value in question.items() %}
+                    <td>
+                        {% if key == "title" %}
+                            <a href="{{ url_for("display_question", question_id=question["id"]) }}">{{ value }}</a>
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
