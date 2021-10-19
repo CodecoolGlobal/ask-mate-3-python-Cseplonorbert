@@ -19,6 +19,10 @@
         <textarea name="message" id="question_input" cols="30" rows="6">{% block question_text%}{% endblock %}</textarea><br>
         <br>
 
+        <label for="file">Upload image</label><br>
+        <input type="file" name="image" class="form-control"><br>
+        <br>
+
         <button type="submit">{% block button_name %}{% endblock %}</button>
 
     </form>
