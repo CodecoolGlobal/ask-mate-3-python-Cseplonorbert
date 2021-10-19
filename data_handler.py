@@ -29,3 +29,8 @@ def add_new_answer(answer):
 
 def delete_question_by_id(question_id):
     pass
+
+
+def edit_question(question):
+    pass
+
