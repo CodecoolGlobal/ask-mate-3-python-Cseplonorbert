@@ -45,3 +45,11 @@ def vote_up_question(question_id):
 
 def vote_down_question(question_id):
     pass
+
+
+def vote_up_answer(answer_id):
+    pass
+
+
+def vote_down_answer(answer_id):
+    pass
