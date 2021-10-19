@@ -41,5 +41,15 @@ def delete_question(question_id):
         return redirect('/list')
 
 
+@app.route("/question/<question_id>/edit", methods = ["GET", "POST"])
+def edit_question(question_id):
+    question = data_handler.get_question_by_id(question_id)
+    if request.method == "POST":
+        question = request.form
+        data_handler.edit_question(question)
+        return redirect("/question/<question_id>")
+    return render_template("edit_question.html", question=question)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
