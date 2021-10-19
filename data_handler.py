@@ -13,3 +13,15 @@ def get_question_by_id(question_id):
 
 def add_question(question):
     pass
+
+
+def get_answers(file_name = "answers.csv"):
+    pass
+
+
+def write_answers_to_file(file_name = "answers.csv"):
+    pass
+
+
+def add_new_answer(answer):
+    pass
