@@ -51,5 +51,11 @@ def edit_question(question_id):
     return render_template("edit_question.html", question=question)
 
 
+@app.route("/answer/<answer_id>/delete", methods = ["GET"])
+def delete_answer(answer_id):
+    data_handler.delete_answer(answer_id)
+    return redirect("/question/<question_id>")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
