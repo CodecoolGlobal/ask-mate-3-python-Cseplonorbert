@@ -38,3 +38,10 @@ def edit_question(question):
 def delete_answer(answer_id):
     pass
 
+
+def vote_up_question(question_id):
+    pass
+
+
+def vote_down_question(question_id):
+    pass

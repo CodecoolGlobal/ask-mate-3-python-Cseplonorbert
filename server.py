@@ -25,7 +25,7 @@ def add_question():
         return render_template("add_question.html")
 
 
-@app.route("/question/<question_id>/new_answer", methods =["POST"])
+@app.route("/question/<question_id>/new_answer", methods=["POST"])
 def add_new_answer(question_id):
     if request.method == "POST":
         answer = request.form
@@ -34,14 +34,14 @@ def add_new_answer(question_id):
     return redirect("/question/<question_id>")
 
 
-@app.route("/question/<question_id>/delete", methods = ["GET"])
+@app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
     if request.method == 'GET':
         data_handler.delete_question_by_id(question_id)
         return redirect('/list')
 
 
-@app.route("/question/<question_id>/edit", methods = ["GET", "POST"])
+@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
     question = data_handler.get_question_by_id(question_id)
     if request.method == "POST":
@@ -54,6 +54,18 @@ def edit_question(question_id):
 @app.route("/answer/<answer_id>/delete", methods = ["GET"])
 def delete_answer(answer_id):
     data_handler.delete_answer(answer_id)
+    return redirect("/question/<question_id>")
+
+
+@app.route("/question/<question_id>/vote_up", methods=["GET"])
+def question_vote_up(question_id):
+    data_handler.vote_up_question(question_id)
+    return redirect("/question/<question_id>")
+
+
+@app.route("/question/<question_id>/vote_down", methods=["GET"])
+def question_vote_down(question_id):
+    data_handler.vote_down_question(question_id)
     return redirect("/question/<question_id>")
 
 
