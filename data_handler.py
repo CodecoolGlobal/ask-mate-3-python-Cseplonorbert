@@ -120,3 +120,15 @@ def increase_view(question_id):
         if question['id'] == question_id:
             question['view_number'] = int(question['view_number']) + 1
     write_data_to_file(questions, QUESTION_HEADERS)
+
+
+def sort_questions(questions, order_by, order):
+    if (order_by == "view_number" or order_by == "vote_number") and order == "ascend":
+        questions = sorted(questions, key=lambda k: int(k[order_by]))
+    elif (order_by == "view_number" or order_by == "vote_number") and order == "desc":
+        questions = sorted(questions, key=lambda k: int(k[order_by]), reverse=True)
+    elif order == "ascend":
+        questions = sorted(questions, key=lambda k: k[order_by])
+    elif order == "desc":
+        questions = sorted(questions, key=lambda k: k[order_by], reverse=True)
+    return questions
