@@ -61,27 +61,27 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
 def question_vote_up(question_id):
-    data_handler.vote_up_question(question_id)
+    data_handler.vote_question(question_id, "up")
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/vote_down", methods=["GET"])
 def question_vote_down(question_id):
-    data_handler.vote_down_question(question_id)
+    data_handler.vote_question(question_id, "down")
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["GET"])
 def answer_vote_up(answer_id):
     question_id = data_handler.get_question_id_by_answer_id(answer_id)
-    data_handler.vote_up_answer(answer_id)
+    data_handler.vote_answer(answer_id, "up")
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/vote_down", methods=["GET"])
 def answer_vote_down(answer_id):
     question_id = data_handler.get_question_id_by_answer_id(answer_id)
-    data_handler.vote_down_answer(answer_id)
+    data_handler.vote_answer(answer_id, "down")
     return redirect(f"/question/{question_id}")
 
 
