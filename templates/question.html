@@ -43,11 +43,11 @@
          </tr>
 
     </table>
-    <form action='{{ url_for("question_vote_up", question_id=question["question_id"]) }}' method = 'GET' >
+    <form action='{{ url_for("question_vote_up", question_id=question["id"]) }}' method = 'GET' >
         <button type="submit"> vote up </button>
     </form>
     <p> Question vote number: {{ question['vote_number'] }} </p>
-    <form action='{{ url_for("question_vote_down", question_id=question["question_id"]) }}' method = 'GET' >
+    <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
         <button type="submit"> vote down </button>
     </form>
     
