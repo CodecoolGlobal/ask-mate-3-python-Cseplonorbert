@@ -43,6 +43,15 @@
          </tr>
 
     </table>
+    <form action='{{ url_for("question_vote_up", question_id=question["question_id"]) }}' method = 'GET' >
+        <button type="submit"> vote up </button>
+    </form>
+    <p> Question vote number: {{ question['vote_number'] }} </p>
+    <form action='{{ url_for("question_vote_down", question_id=question["question_id"]) }}' method = 'GET' >
+        <button type="submit"> vote down </button>
+    </form>
+    
+
     <h2>Answers:</h2>
 
     <table>
@@ -51,6 +60,8 @@
         <th>Vote number</th>
         <th>Message</th>
         <th>Image</th>
+        <th>Vote up </th>
+        <th>Vote down </th>
            
         
         
@@ -66,6 +77,16 @@
                         {% endif %}
                     </td>
                 {% endfor %}
+                <td>
+                    <form action='{{ url_for("answer_vote_up", answer_id=answer["id"]) }}' method = 'GET' >
+                        <button type="submit"> vote up </button>
+                    </form>
+                </td>
+                <td>
+                    <form action='{{ url_for("answer_vote_down", answer_id=answer["id"]) }}' method = 'GET' >
+                        <button type="submit"> vote down </button>
+                    </form>
+                </td>
                     
 
             </tr>
