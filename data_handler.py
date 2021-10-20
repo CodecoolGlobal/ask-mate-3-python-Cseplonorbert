@@ -4,6 +4,7 @@ from date_handler import get_today_date_to_time_stamp
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWERS_HEADERS = ['id','submission_time','vote_number','question_id','message','image']
 
+
 def get_data_from_file(file_name="question.csv"):
     with open(file_name, "r", newline="") as csv_file:
         reader = csv.DictReader(csv_file)
@@ -23,7 +24,6 @@ def get_question_by_id(question_id):
     for question in questions:
         if question['id'] == question_id:
             return question
-
 
 
 def add_question(question):
@@ -55,7 +55,13 @@ def get_question_id_by_answer_id(answer_id):
 
 
 def add_new_answer(answer):
-    pass
+    answers = get_data_from_file("answer.csv")
+    new_id = len(answers)+1
+    answer['id'] = new_id
+    answer['vote_number'] = 0
+    answer['submission_time'] = get_today_date_to_time_stamp()
+    answers.append(answer)
+    write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
 
 
 def delete_question_by_id(question_id):
