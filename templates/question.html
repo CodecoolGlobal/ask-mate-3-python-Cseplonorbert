@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 
@@ -51,26 +51,28 @@
         <th>Vote number</th>
         <th>Message</th>
         <th>Image</th>
-
+           
+        
+        
         {% for answer in answers %}
+            
             <tr>
                 {% for key,value in answer.items() %}
-                    {% if key == 'image' %}
-                        <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style='width: 150px'>
-                    {% elif key != 'question_id' %}
-                        {{ value }}
-                    {% endif %}
+                    <td>
+                        {% if key == 'image' %}
+                            <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style='width: 150px'>
+                        {% elif key != 'question_id' %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
                 {% endfor %}
-
+                    
 
             </tr>
         {% endfor %}
-
     </table>
+        
 </body>
-
-
-
 
 
 </html>
