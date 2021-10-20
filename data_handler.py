@@ -1,8 +1,9 @@
 import csv
 from date_handler import get_today_date_to_time_stamp
+import os
 
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
-ANSWERS_HEADERS = ['id','submission_time','vote_number','question_id','message','image']
+ANSWERS_HEADERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 def get_data_from_file(file_name="question.csv"):
@@ -34,7 +35,7 @@ def add_question(question):
     question['vote_number'] = 0
     question['submission_time'] = get_today_date_to_time_stamp()
     questions.append(question)
-    write_data_to_file(questions,QUESTION_HEADERS)
+    write_data_to_file(questions, QUESTION_HEADERS)
 
 
 def get_answers_by_question_id(question_id):
@@ -64,13 +65,28 @@ def add_new_answer(answer):
     write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
 
 
-def delete_question_by_id(question_id):
-    questions = get_data_from_file()
-    for index, question in enumerate(questions):
-        if question["id"] == question_id:
+def get_file_name_and_headers_by_type(datatype):
+    if datatype == "question":
+        file_name = "question.csv"
+        headers = QUESTION_HEADERS
+    else:
+        file_name = "answer.csv"
+        headers = ANSWERS_HEADERS
+    return file_name, headers
+
+
+def delete_by_id(dictionary_id, datatype):
+    delete_index = False
+    file_name, headers = get_file_name_and_headers_by_type(datatype)
+    file_data = get_data_from_file(file_name)
+    for index, dictionary in enumerate(file_data):
+        if dictionary["id"] == dictionary_id:
             delete_index = index
-    del questions[delete_index]
-    write_data_to_file(questions, QUESTION_HEADERS)
+    if delete_index:
+        if file_data[delete_index]['image']:
+            os.remove(f"./static/{file_data[delete_index]['image']}")
+        del file_data[delete_index]
+        write_data_to_file(file_data, headers, file_name)
 
 
 def edit_question(edited_question):
@@ -79,36 +95,28 @@ def edit_question(edited_question):
         if question["id"] == edited_question["id"]:
             question["title"] = edited_question["title"]
             question["message"] = edited_question["message"]
-            question["image"] = edited_question["image"]
+            if edited_question["image"]:
+                if question["image"]:
+                    os.remove(f"./static/{question['image']}")
+                question["image"] = edited_question["image"]
     write_data_to_file(questions, QUESTION_HEADERS)
 
 
-def delete_answer(answer_id):
-    answers = get_data_from_file("answer.csv")
-    for index, answer in enumerate(answers):
-        if answer["id"] == answer_id:
-            delete_index = index
-    del answers[delete_index]
-    write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
+def vote_dict(dictionary_id, vote, datatype):
+    file_name, headers = get_file_name_and_headers_by_type(datatype)
+    file_data = get_data_from_file(file_name)
+    for dictionary in file_data:
+        if dictionary["id"] == dictionary_id:
+            if vote == "up":
+                dictionary["vote_number"] = int(dictionary["vote_number"]) + 1
+            elif vote == "down":
+                dictionary["vote_number"] = int(dictionary["vote_number"]) - 1
+    write_data_to_file(file_data, headers, file_name)
 
 
-def vote_question(question_id, vote):
+def increase_view(question_id):
     questions = get_data_from_file()
     for question in questions:
-        if question["id"] == question_id:
-            if vote == "up":
-                question["vote_number"] = int(question["vote_number"]) + 1
-            elif vote == "down":
-                question["vote_number"] = int(question["vote_number"]) - 1
+        if question['id'] == question_id:
+            question['view_number'] = int(question['view_number']) + 1
     write_data_to_file(questions, QUESTION_HEADERS)
-
-
-def vote_answer(answer_id, vote):
-    answers = get_data_from_file("answer.csv")
-    for answer in answers:
-        if answer["id"] == answer_id:
-            if vote == "up":
-                answer["vote_number"] = int(answer["vote_number"]) + 1
-            elif vote == "down":
-                answer["vote_number"] = int(answer["vote_number"]) - 1
-    write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
