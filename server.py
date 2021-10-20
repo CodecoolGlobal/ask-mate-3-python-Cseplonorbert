@@ -27,6 +27,10 @@ def allowed_image(filename):
 def main_page():
     questions = data_handler.get_data_from_file()
     questions = convert_timestamps_to_date(questions)
+    if request.args:
+        order_by = request.args.get('order_by')
+        order = request.args.get("order")
+        questions = data_handler.sort_questions(questions, order_by, order)
     return render_template("index.html", questions=questions)
 
 
