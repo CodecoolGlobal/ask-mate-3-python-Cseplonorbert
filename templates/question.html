@@ -1,42 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Display question</title>
-
-
 </head>
 <body>
-
     <h1>Question:</h1>
     <table>
-
         <tr> 
             <td>
                 Question title
-
             </td>
             <td>
-
                 {{ question['title'] }}
-
             </td>
-
-            
          </tr>
 
          <tr>
              <td>
-
                 Message
-
              </td>
-
              <td>
                 {{ question['message'] }}
              </td>
@@ -50,7 +36,13 @@
     <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
         <button type="submit"> vote down </button>
     </form>
-    
+    <br>
+    <a href="/list">Back to the homepage</a><br>
+    <br>
+    <a href="{{ url_for('edit_question', question_id=question['id']) }}">Edit question</a><br>
+    <br>
+    <a href="{{ url_for('delete_question', question_id=question['id']) }}">DELETE THIS QUESTION</a>
+    <br>
 
     <h2>Answers:</h2>
 
@@ -62,11 +54,9 @@
         <th>Image</th>
         <th>Vote up </th>
         <th>Vote down </th>
-           
-        
-        
+        <th>Delete answer link</th>
+
         {% for answer in answers %}
-            
             <tr>
                 {% for key,value in answer.items() %}
                     <td>
@@ -87,8 +77,7 @@
                         <button type="submit"> vote down </button>
                     </form>
                 </td>
-                    
-
+                <td><a href="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="GET">Delete answer</a></td>
             </tr>
         {% endfor %}
     </table>
