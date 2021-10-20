@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Display question</title>
+
+
+</head>
+<body>
+
+    <h1>Question:</h1>
+    <table>
+
+        <tr> 
+            <td>
+                Question title
+
+            </td>
+            <td>
+
+                {{ question['title'] }}
+
+            </td>
+
+            
+         </tr>
+
+         <tr>
+             <td>
+
+                Message
+
+             </td>
+
+             <td>
+                {{ question['message'] }}
+             </td>
+         </tr>
+
+    </table>
+    <h2>Answers:</h2>
+
+    <table>
+        <th>ID</th>
+        <th>Submission time</th>
+        <th>Vote number</th>
+        <th>Message</th>
+        <th>Image</th>
+
+        {% for answer in answers %}
+            <tr>
+                {% for key,value in answer.items() %}
+                    {% if key == 'image' %}
+                        <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style='width: 150px'>
+                    {% elif key != 'question_id' %}
+                        {{ value }}
+                    {% endif %}
+                {% endfor %}
+
+
+            </tr>
+        {% endfor %}
+
+    </table>
+</body>
+
+
+
+
+
+</html>
