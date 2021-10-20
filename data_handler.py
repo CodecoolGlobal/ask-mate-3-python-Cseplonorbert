@@ -65,15 +65,31 @@ def add_new_answer(answer):
 
 
 def delete_question_by_id(question_id):
-    pass
+    questions = get_data_from_file()
+    for index, question in enumerate(questions):
+        if question["id"] == question_id:
+            delete_index = index
+    del questions[delete_index]
+    write_data_to_file(questions, QUESTION_HEADERS)
 
 
-def edit_question(question):
-    pass
+def edit_question(edited_question):
+    questions = get_data_from_file()
+    for question in questions:
+        if question["id"] == edited_question["id"]:
+            question["title"] = edited_question["title"]
+            question["message"] = edited_question["message"]
+            question["image"] = edited_question["image"]
+    write_data_to_file(questions, QUESTION_HEADERS)
 
 
 def delete_answer(answer_id):
-    pass
+    answers = get_data_from_file("answer.csv")
+    for index, answer in enumerate(answers):
+        if answer["id"] == answer_id:
+            delete_index = index
+    del answers[delete_index]
+    write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
 
 
 def vote_question(question_id, vote):
