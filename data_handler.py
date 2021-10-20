@@ -46,6 +46,13 @@ def get_answers_by_question_id(question_id):
     return related_answers
 
 
+def get_question_id_by_answer_id(answer_id):
+    answers = get_data_from_file("answer.csv")
+    for answer in answers:
+        if answer['id'] == answer_id:
+            question_id = answer["question_id"]
+    return question_id
+
 
 def add_new_answer(answer):
     pass
