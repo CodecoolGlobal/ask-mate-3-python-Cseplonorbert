@@ -12,7 +12,7 @@ def get_data_from_file(file_name="question.csv"):
         return data
 
 
-def write_data_to_file(data,headers, file_name="question.csv"):
+def write_data_to_file(data, headers, file_name="question.csv"):
     with open(file_name, "w+") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=headers)
         writer.writeheader()
@@ -33,7 +33,7 @@ def add_question(question):
     question['view_number'] = 0
     question['vote_number'] = 0
     question['submission_time'] = get_today_date_to_time_stamp()
-    questions.append()
+    questions.append(question)
     write_data_to_file(questions,QUESTION_HEADERS)
 
 
@@ -76,17 +76,23 @@ def delete_answer(answer_id):
     pass
 
 
-def vote_up_question(question_id):
-    pass
+def vote_question(question_id, vote):
+    questions = get_data_from_file()
+    for question in questions:
+        if question["id"] == question_id:
+            if vote == "up":
+                question["vote_number"] = int(question["vote_number"]) + 1
+            elif vote == "down":
+                question["vote_number"] = int(question["vote_number"]) - 1
+    write_data_to_file(questions, QUESTION_HEADERS)
 
 
-def vote_down_question(question_id):
-    pass
-
-
-def vote_up_answer(answer_id):
-    pass
-
-
-def vote_down_answer(answer_id):
-    pass
+def vote_answer(answer_id, vote):
+    answers = get_data_from_file("answer.csv")
+    for answer in answers:
+        if answer["id"] == answer_id:
+            if vote == "up":
+                answer["vote_number"] = int(answer["vote_number"]) + 1
+            elif vote == "down":
+                answer["vote_number"] = int(answer["vote_number"]) - 1
+    write_data_to_file(answers, ANSWERS_HEADERS, "answer.csv")
