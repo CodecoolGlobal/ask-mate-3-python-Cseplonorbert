@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import data_handler
-from date_handler import convert_timestamps_to_date
+import utils
 from werkzeug.utils import secure_filename
 import os
 
@@ -10,36 +10,24 @@ app.config["IMAGE_UPLOADS"] = f"{os.getcwd()}/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
 
 
-def allowed_image(filename):
-    if "." not in filename:
-        return False
-
-    ext = filename.rsplit(".", 1)[1]
-
-    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
-        return True
-    else:
-        return False
-
-
 @app.route("/", methods=["GET"])
 @app.route("/list", methods=["GET"])
 def main_page():
     questions = data_handler.get_data_from_file()
-    questions = convert_timestamps_to_date(questions)
+    questions = utils.convert_timestamps_to_date(questions)
     if request.args:
         order_by = request.args.get('order_by')
         order = request.args.get("order")
-        questions = data_handler.sort_questions(questions, order_by, order)
+        questions = utils.sort_questions(questions, order_by, order)
     return render_template("index.html", questions=questions)
 
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
     data_handler.increase_view(question_id)
-    question = data_handler.get_question_by_id(question_id)
-    answers = data_handler.get_answers_by_question_id(question_id)
-    answers = convert_timestamps_to_date(answers)
+    question = utils.get_question_by_id(question_id)
+    answers = utils.get_answers_by_question_id(question_id)
+    answers = utils.convert_timestamps_to_date(answers)
     return render_template("question.html", question=question, answers=answers)
 
 
@@ -49,7 +37,7 @@ def add_question():
         question = dict()
         if request.files:
             image = request.files["image"]
-            if allowed_image(image.filename):
+            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
                 filename = secure_filename(image.filename)
 
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
@@ -69,7 +57,7 @@ def add_new_answer(question_id):
     if request.method == "POST":
         if request.files:
             image = request.files["image"]
-            if allowed_image(image.filename):
+            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                 answer["image"] = f"images/{image.filename}"
@@ -82,7 +70,7 @@ def add_new_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
     if request.method == 'GET':
-        answers = data_handler.get_answers_by_question_id(question_id)
+        answers = utils.get_answers_by_question_id(question_id)
         if answers:
             for answer in answers:
                 answer_id = answer['id']
@@ -93,13 +81,13 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = data_handler.get_question_by_id(question_id)
+    question = utils.get_question_by_id(question_id)
     if request.method == "POST":
         question['title'] = request.form['title']
         question['message'] = request.form['message']
         if request.files:
             image = request.files["image"]
-            if allowed_image(image.filename):
+            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                 question["image"] = f"images/{image.filename}"
@@ -110,7 +98,7 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/delete", methods=["GET"])
 def delete_answer(answer_id):
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = utils.get_question_id_by_answer_id(answer_id)
     data_handler.delete_by_id(answer_id, "answer")
     return redirect(f"/question/{question_id}")
 
@@ -129,14 +117,14 @@ def question_vote_down(question_id):
 
 @app.route("/answer/<answer_id>/vote_up", methods=["GET"])
 def answer_vote_up(answer_id):
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = utils.get_question_id_by_answer_id(answer_id)
     data_handler.vote_dict(answer_id, "up", "answer")
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/vote_down", methods=["GET"])
 def answer_vote_down(answer_id):
-    question_id = data_handler.get_question_id_by_answer_id(answer_id)
+    question_id = utils.get_question_id_by_answer_id(answer_id)
     data_handler.vote_dict(answer_id, "down", "answer")
     return redirect(f"/question/{question_id}")
 
