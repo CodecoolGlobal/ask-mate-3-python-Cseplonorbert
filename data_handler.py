@@ -1,35 +1,23 @@
-import csv
-from date_handler import get_today_date_to_time_stamp
+from utils import get_today_date_to_time_stamp
+from connection import get_data_from_file, write_data_to_file
 import os
 
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWERS_HEADERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_data_from_file(file_name="question.csv"):
-    with open(file_name, "r", newline="") as csv_file:
-        reader = csv.DictReader(csv_file)
-        data = list(reader)
-        return data
-
-
-def write_data_to_file(data, headers, file_name="question.csv"):
-    with open(file_name, "w+") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=headers)
-        writer.writeheader()
-        writer.writerows(data)
-
-
-def get_question_by_id(question_id):
-    questions = get_data_from_file()
-    for question in questions:
-        if question['id'] == question_id:
-            return question
+def get_id(datatype):
+    file_name, headers = get_file_name_and_headers_by_type(datatype)
+    file_data = get_data_from_file(file_name)
+    last_dictionary = file_data[-1]
+    last_dictionary_id = int(last_dictionary['id'])
+    new_id = last_dictionary_id + 1
+    return new_id
 
 
 def add_question(question):
     questions = get_data_from_file()
-    new_id = len(questions)+1
+    new_id = get_id("question")
     question['id'] = new_id
     question['view_number'] = 0
     question['vote_number'] = 0
@@ -38,26 +26,9 @@ def add_question(question):
     write_data_to_file(questions, QUESTION_HEADERS)
 
 
-def get_answers_by_question_id(question_id):
-    answers = get_data_from_file('answer.csv')
-    related_answers = []
-    for answer in answers:
-        if answer['question_id'] == question_id:
-            related_answers.append(answer)
-    return related_answers
-
-
-def get_question_id_by_answer_id(answer_id):
-    answers = get_data_from_file("answer.csv")
-    for answer in answers:
-        if answer['id'] == answer_id:
-            question_id = answer["question_id"]
-    return question_id
-
-
 def add_new_answer(answer):
     answers = get_data_from_file("answer.csv")
-    new_id = len(answers)+1
+    new_id = get_id("answer")
     answer['id'] = new_id
     answer['vote_number'] = 0
     answer['submission_time'] = get_today_date_to_time_stamp()
@@ -120,15 +91,3 @@ def increase_view(question_id):
         if question['id'] == question_id:
             question['view_number'] = int(question['view_number']) + 1
     write_data_to_file(questions, QUESTION_HEADERS)
-
-
-def sort_questions(questions, order_by, order):
-    if (order_by == "view_number" or order_by == "vote_number") and order == "ascend":
-        questions = sorted(questions, key=lambda k: int(k[order_by]))
-    elif (order_by == "view_number" or order_by == "vote_number") and order == "desc":
-        questions = sorted(questions, key=lambda k: int(k[order_by]), reverse=True)
-    elif order == "ascend":
-        questions = sorted(questions, key=lambda k: k[order_by])
-    elif order == "desc":
-        questions = sorted(questions, key=lambda k: k[order_by], reverse=True)
-    return questions
