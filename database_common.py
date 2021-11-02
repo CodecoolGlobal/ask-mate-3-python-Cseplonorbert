@@ -21,3 +21,14 @@ def get_connection_string():
         )
     else:
         raise KeyError('Some necessary environment variable(s) are not defined')
+
+
+def open_database():
+    try:
+        connection_string = get_connection_string()
+        connection = psycopg2.connect(connection_string)
+        connection.autocommit = True
+    except psycopg2.DatabaseError as exception:
+        print('Database connection problem')
+        raise exception
+    return connection
