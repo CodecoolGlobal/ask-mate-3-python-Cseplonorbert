@@ -53,6 +53,11 @@ def get_question_by_id(cursor, question_id):
 
 
 @database_common.connection_handler
+def answers_by_question_id(cursor, question_id):
+    pass
+
+
+@database_common.connection_handler
 def edit_question(cursor, question):
     pass
 
