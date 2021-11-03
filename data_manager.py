@@ -37,6 +37,9 @@ def delete_question_id(cursor, question_id):
     query = f"""
         DELETE FROM answer 
         USING question
-        WHERE answer.question_id = '{question_id}'"""
+        WHERE answer.question_id = '{question_id}'
+        DELETE FROM question 
+        WHERE question.question_id = '{question_id}'"""
+
     cursor.execute(query)
 
