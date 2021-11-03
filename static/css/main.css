@@ -9,3 +9,10 @@ nav{
     background: rgb(255, 204, 153);
     border-bottom: 1px solid rgb(0,0,0);
 }
+nav a{
+    display: block;
+    color: rgb(0,0,0);
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 50px;
+}
