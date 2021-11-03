@@ -33,12 +33,12 @@ def add_new_answer(cursor, answer):
 
 
 @database_common.connection_handler
-def add_answer_comment(cursor, answer_comment, answer_id):
+def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
     INTO comment (question_id, answer_id, message, submission_time, edited_count) 
-    VALUES(NULL, '{answer_id}', '{answer_comment["message"]}',
-    CURRENT_DATE, '{answer_comment["edited_count"]}'"""
+    VALUES(NULL, '{answer_comment["answer_id"]}', '{answer_comment["message"]}',
+    CURRENT_DATE, '{answer_comment["edited_count"]}')"""
     cursor.execute(query)
 
 
@@ -101,14 +101,14 @@ def delete_tag(cursor, question_id, tag_id):
 def get_comments(cursor):
     query = """SELECT question_id, answer_id, message, submission_time, edited_count FROM comment"""
     cursor.execute(query)
-    cursor.fetchall()
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
-def add_new_question_comment(cursor, comment, question_id):
+def add_new_question_comment(cursor, comment):
     query = f"""
         INSERT 
         INTO comment (question_id, answer_id, message, submission_time, edited_count) 
-        VALUES('{question_id}', NULL, '{comment["message"]}',
-        CURRENT_DATE, '{comment["edited_count"]}'"""
+        VALUES('{comment["question_id"]}', NULL, '{comment["message"]}',
+        CURRENT_DATE, '{comment["edited_count"]}')"""
     cursor.execute(query)
