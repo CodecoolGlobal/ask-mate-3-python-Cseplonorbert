@@ -76,6 +76,7 @@ def delete_question(question_id):
                 answer_id = answer['id']
                 data_handler.delete_by_id(answer_id, 'answer')
         data_handler.delete_by_id(question_id, "question")
+        data_manager.delete_question_id(question_id)
         return redirect('/list')
 
 
@@ -92,6 +93,7 @@ def edit_question(question_id):
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                 question["image"] = f"images/{image.filename}"
         data_handler.edit_question(question)
+
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question)
 
