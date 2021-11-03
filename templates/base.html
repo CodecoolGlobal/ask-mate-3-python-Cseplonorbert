@@ -9,10 +9,11 @@
 
     <form action="{% block link %}{% endblock %}" method="post" enctype="multipart/form-data">
 
+    {% block question_title_input %}
         <label for="title_input" name="title">Question Title</label><br>
         <textarea name="title" id="title_input" cols="15" rows="1">{% block question_title %}{% endblock %}</textarea><br>
         <br>
-
+    {% endblock %}
         <label for="question_input" name="message">Question:</label><br>
         <textarea name="message" id="question_input" cols="30" rows="6">{% block question_text%}{% endblock %}</textarea><br>
         <br>
