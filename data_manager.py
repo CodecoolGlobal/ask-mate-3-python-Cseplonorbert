@@ -40,4 +40,10 @@ def add_answer_comment(cursor, answer_comment, question_id, answer_id):
     VALUES('{question_id}', '{answer_id}', '{answer_comment["message"]}',
     CURRENT_DATE, '{answer_comment["edited_count"]}'"""
     cursor.execute(query)
+
+
+@database_common.connection_handler
+def edit_question(cursor, question):
+    pass
+
     
