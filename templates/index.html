@@ -26,7 +26,9 @@
                         {% if key == "title" %}
                             <a href="{{ url_for("display_question", question_id=question["id"]) }}">{{ value }}</a>
                         {% elif key == "image" %}
-                            <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style="width: 150px">
+                            {% if value %}
+                                <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style="width: 150px">
+                            {% endif %}
                         {% else %}
                             {{ value }}
                         {% endif %}
