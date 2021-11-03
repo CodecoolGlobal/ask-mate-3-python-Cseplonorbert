@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+    <form action="{% block link %}{% endblock %}" method="post">
+
+        <label for="{% block type %}{% endblock %}" name="{% block type %}{% endblock %}">Comment:</label><br>
+        <textarea name="{% block type %}{% endblock %}" id="{% block type %}{% endblock %}" cols="30" rows="6"></textarea><br>
+        <br>
+        <button type="submit">Comment</button>
+
+    </form>
+{% endblock %}
