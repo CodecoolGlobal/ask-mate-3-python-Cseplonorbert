@@ -55,3 +55,8 @@ def vote_data(cursor, datatype, data_id, vote):
 @database_common.connection_handler
 def increase_view(cursor, question_id):
     pass
+
+
+@database_common.connection_handler
+def search_question(cursor, search_phrase):
+    pass
