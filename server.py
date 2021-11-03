@@ -17,8 +17,8 @@ def main_page():
     questions = data_manager.get_questions()
     if request.args:
         order_by = request.args.get('order_by')
-        order = request.args.get("order")
-        questions = utils.sort_questions(questions, order_by, order)
+        order = request.args.get('order_direction')
+        questions = data_manager.sort_questions(order_by, order)
     return render_template("index.html", questions=questions)
 
 
