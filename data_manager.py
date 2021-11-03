@@ -70,3 +70,8 @@ def edit_comment(cursor, edited_comment):
 @database_common.connection_handler
 def display_latest_questions(cursor, number_of_questions=5):
     pass
+
+
+@database_common.connection_handler
+def sort_questions(cursor, order_by, order):
+    pass
