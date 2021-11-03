@@ -64,7 +64,6 @@ def add_new_answer(question_id):
         answer["message"] = request.form["message"]
         answer["question_id"] = question_id
         data_handler.add_new_answer(answer)
-        data_manager.add_new_answer(answer)
     return redirect(f"/question/{question_id}")
 
 
@@ -102,6 +101,11 @@ def delete_answer(answer_id):
     question_id = utils.get_question_id_by_answer_id(answer_id)
     data_handler.delete_by_id(answer_id, "answer")
     return redirect(f"/question/{question_id}")
+
+
+@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+def add_question_comment(question_id):
+    return render_template("add_question_comment.html")
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
