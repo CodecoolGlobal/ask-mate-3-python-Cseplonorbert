@@ -5,8 +5,8 @@
 {% block content %}
     <form action="{% block link %}{% endblock %}" method="post">
 
-        <label for="{% block type %}{% endblock %}" name="{% block type %}{% endblock %}">Comment:</label><br>
-        <textarea name="{% block type %}{% endblock %}" id="{% block type %}{% endblock %}" cols="30" rows="6"></textarea><br>
+        <label for="comment" name="comment">Comment:</label><br>
+        <textarea name="comment" id="comment" cols="30" rows="6"></textarea><br>
         <br>
         <button type="submit">Comment</button>
 
