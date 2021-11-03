@@ -100,3 +100,8 @@ def delete_tag(cursor, question_id, tag_id):
 @database_common.connection_handler
 def get_comments(cursor, datatype, data_id):
     pass
+
+
+@database_common.connection_handler
+def add_new_question_comment(cursor, comment):
+    pass
