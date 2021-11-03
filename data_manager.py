@@ -44,7 +44,9 @@ def add_answer_comment(cursor, answer_comment):
 
 @database_common.connection_handler
 def get_questions(cursor):
-    pass
+    query = f"""SELECT * FROM question"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -59,6 +61,11 @@ def answers_by_question_id(cursor, question_id):
     query = f"""SELECT * FROM answer WHERE question_id ='{question_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def edit_answer(cursor, answer):
+    pass
 
 
 @database_common.connection_handler
