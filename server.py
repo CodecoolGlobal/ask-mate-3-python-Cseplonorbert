@@ -26,11 +26,11 @@ def main_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
     data_handler.increase_view(question_id)
-    question = utils.get_question_by_id(question_id)
+    question = data_manager.get_question_by_id(question_id)
     answers = utils.get_answers_by_question_id(question_id)
     answers = utils.convert_timestamps_to_date(answers)
     comments = data_manager.get_comments()
-    return render_template("question.html", question=question, answers=answers, comments=comments)
+    return render_template("question.html", question=question[0], answers=answers, comments=comments)
 
 
 @app.route("/add_question", methods=["GET", "POST"])
