@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import data_handler
 import utils
 from werkzeug.utils import secure_filename
@@ -110,7 +110,13 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_question_comment(question_id):
-    return render_template("add_question_comment.html")
+    if request.method == "POST":
+        question_comment = request.form['question_comment']
+        question_comment["edit_count"] = 0
+        question_comment["question_id"] = question_id
+        data_manager.add_new_question_comment(question_comment)
+        return redirect(url_for('display_question', question_id=question_id))
+    return render_template("add_question_comment.html", question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
