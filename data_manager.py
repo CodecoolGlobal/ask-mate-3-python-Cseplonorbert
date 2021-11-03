@@ -33,11 +33,11 @@ def add_new_answer(cursor, answer):
 
 
 @database_common.connection_handler
-def delete_question_id(cursor, question_id):
+def add_answer_comment(cursor, answer_comment, question_id, answer_id):
     query = f"""
-        DELETE FROM answer, question 
-        WHERE question_id = '{question_id}'
-        """
-
+    INSERT 
+    INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+    VALUES('{question_id}', '{answer_id}', '{answer_comment["message"]}',
+    CURRENT_DATE, '{answer_comment["edited_count"]}'"""
     cursor.execute(query)
-
+    
