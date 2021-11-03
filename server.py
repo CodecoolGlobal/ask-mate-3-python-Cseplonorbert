@@ -117,7 +117,7 @@ def add_answer_comment(question_id, answer_id):
         answer_comment['edit_count'] = 0
         data_manager.add_answer_comment(answer_comment, question_id, answer_id)
         return redirect(f"/question/{question_id}")
-    return render_template("add_answer_comment.html")
+    return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
