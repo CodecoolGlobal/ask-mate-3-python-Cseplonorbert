@@ -7,7 +7,9 @@
 
 {% block content %}
 
-    <a href="/add_question">Add new question</a><br>
+    <form action="/add_question">
+        <button type="submit">Add new question</button>
+    </form>
     <br>
     
     <form action="/list" method="get" enctype="text/plain">
