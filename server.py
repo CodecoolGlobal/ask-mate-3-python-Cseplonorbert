@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import data_handler
+import data_manager
 import utils
 from werkzeug.utils import secure_filename
 import os
@@ -45,6 +46,7 @@ def add_question():
 
         question['title'] = request.form['title']
         question['message'] = request.form['message']
+        data_manager.add_question(question)
         data_handler.add_question(question)
         return redirect('/list')
     elif request.method == "GET":
@@ -64,6 +66,7 @@ def add_new_answer(question_id):
         answer["message"] = request.form["message"]
         answer["question_id"] = question_id
         data_handler.add_new_answer(answer)
+        data_manager.add_new_answer(answer)
     return redirect(f"/question/{question_id}")
 
 
@@ -106,6 +109,15 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-comment", method=["GET", "POST"])
 def add_question_comment(question_id):
     return render_template("add_question_comment.html")
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+def add_answer_comment(answer_id):
+    if request.method == "POST":
+        request.form('answer_comment')
+        question_id = utils.get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
+    return render_template("add_answer_comment.html")
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
