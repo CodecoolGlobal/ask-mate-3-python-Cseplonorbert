@@ -1,16 +1,9 @@
-{% extends "layout.html" %}
+{% extends "add_new_comment.html" %}
 
 {% block page_title %}
     Answer comment
 {% endblock %}
 
-{% block content %}
-    <form action="{{ url_for('add_answer_comment', question_id=question_id, answer_id=answer_id) }}" method="post">
+{% block link %}{{ url_for('add_answer_comment', question_id=question_id, answer_id=answer_id) }}{% endblock %}
 
-        <label for="answer_comment" name="answer_comment">Comment:</label><br>
-        <textarea name="answer_comment" id="answer_comment" cols="30" rows="6"></textarea><br>
-        <br>
-        <button type="submit">Comment</button>
-
-    </form>
-{% endblock %}
+{% block type %}answer_comment{% endblock %}
