@@ -107,7 +107,7 @@ def display_latest_questions(cursor, number_of_questions=5):
 
 @database_common.connection_handler
 def sort_questions(cursor, order_by, order):
-    query = f"""SELECT * FROM question ORDER_BY '{order_by}' '{order}'"""
+    query = f"""SELECT * FROM question ORDER BY {order_by} {order}"""
     cursor.execute(query)
     return cursor.fetchall()
 
