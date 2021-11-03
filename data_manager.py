@@ -50,3 +50,8 @@ def edit_question(cursor, question):
 @database_common.connection_handler
 def vote_data(cursor, datatype, data_id, vote):
     pass
+
+
+@database_common.connection_handler
+def increase_view(cursor, question_id):
+    pass
