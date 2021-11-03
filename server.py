@@ -29,7 +29,8 @@ def display_question(question_id):
     question = utils.get_question_by_id(question_id)
     answers = utils.get_answers_by_question_id(question_id)
     answers = utils.convert_timestamps_to_date(answers)
-    return render_template("question.html", question=question, answers=answers)
+    comments = data_manager.get_comments()
+    return render_template("question.html", question=question, answers=answers, comments=comments)
 
 
 @app.route("/add_question", methods=["GET", "POST"])
@@ -111,7 +112,8 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_question_comment(question_id):
     if request.method == "POST":
-        question_comment = request.form['comment']
+        question_comment = dict()
+        question_comment["message"] = request.form['comment']
         question_comment["edited_count"] = 0
         question_comment["question_id"] = question_id
         data_manager.add_new_question_comment(question_comment)
@@ -122,9 +124,11 @@ def add_question_comment(question_id):
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_answer_comment(question_id, answer_id):
     if request.method == "POST":
-        answer_comment = request.form['comment']
+        answer_comment = dict()
+        answer_comment["message"] = request.form["comment"]
         answer_comment['edited_count'] = 0
-        data_manager.add_answer_comment(answer_comment, answer_id)
+        answer_comment['answer_id'] = answer_id
+        data_manager.add_answer_comment(answer_comment)
         return redirect(f"/question/{question_id}")
     return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
 
