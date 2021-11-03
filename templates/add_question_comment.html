@@ -1,0 +1,9 @@
+{% extends "add_new_comment.html" %}
+
+{% block page_title %}
+    Question comment
+{% endblock %}
+
+{% block link %}{{ url_for('add_question_comment', question_id=question_id) }}{% endblock %}
+
+{% block type %}question_comment{% endblock %}
