@@ -27,8 +27,7 @@ def main_page():
 def display_question(question_id):
     data_handler.increase_view(question_id)
     question = data_manager.get_question_by_id(question_id)
-    answers = utils.get_answers_by_question_id(question_id)
-    answers = utils.convert_timestamps_to_date(answers)
+    answers = data_manager.answers_by_question_id(question_id)
     comments = data_manager.get_comments()
     return render_template("question.html", question=question[0], answers=answers, comments=comments)
 
