@@ -33,11 +33,11 @@ def add_new_answer(cursor, answer):
 
 
 @database_common.connection_handler
-def add_answer_comment(cursor, answer_comment, question_id, answer_id):
+def add_answer_comment(cursor, answer_comment, answer_id):
     query = f"""
     INSERT 
     INTO comment (question_id, answer_id, message, submission_time, edited_count) 
-    VALUES('{question_id}', '{answer_id}', '{answer_comment["message"]}',
+    VALUES(NULL, '{answer_id}', '{answer_comment["message"]}',
     CURRENT_DATE, '{answer_comment["edited_count"]}'"""
     cursor.execute(query)
 
@@ -103,5 +103,10 @@ def get_comments(cursor, datatype, data_id):
 
 
 @database_common.connection_handler
-def add_new_question_comment(cursor, comment):
-    pass
+def add_new_question_comment(cursor, comment, question_id):
+    query = f"""
+        INSERT 
+        INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+        VALUES('{question_id}', NULL, '{comment["message"]}',
+        CURRENT_DATE, '{comment["edited_count"]}'"""
+    cursor.execute(query)
