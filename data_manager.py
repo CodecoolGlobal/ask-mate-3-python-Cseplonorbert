@@ -48,6 +48,11 @@ def get_questions(cursor):
 
 
 @database_common.connection_handler
+def get_question_by_id(cursor, question_id):
+    pass
+
+
+@database_common.connection_handler
 def edit_question(cursor, question):
     pass
 
