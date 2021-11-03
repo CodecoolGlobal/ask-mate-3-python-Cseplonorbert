@@ -49,7 +49,7 @@ def get_questions(cursor):
 
 @database_common.connection_handler
 def get_question_by_id(cursor, question_id):
-    query = f"""SELECT * FROM question WHERE question_id = '{question_id}'"""
+    query = f"""SELECT * FROM question WHERE id = '{question_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
 
