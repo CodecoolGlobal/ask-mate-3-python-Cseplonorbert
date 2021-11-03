@@ -101,7 +101,13 @@ def add_tag(cursor, tag_name):
     pass
 
 
+@database_common.connection_handler
 def add_tag_to_question(cursor, question_id, tag_id):
+    pass
+
+
+@database_common.connection_handler
+def get_question_tags(cursor, question_id):
     pass
 
 
