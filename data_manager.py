@@ -60,3 +60,8 @@ def increase_view(cursor, question_id):
 @database_common.connection_handler
 def search_question(cursor, search_phrase):
     pass
+
+
+@database_common.connection_handler
+def edit_comment(cursor, edited_comment):
+    pass
