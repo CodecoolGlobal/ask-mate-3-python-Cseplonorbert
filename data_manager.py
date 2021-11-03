@@ -112,6 +112,11 @@ def get_question_tags(cursor, question_id):
 
 
 @database_common.connection_handler
+def get_tags(cursor):
+    pass
+
+
+@database_common.connection_handler
 def delete_tag(cursor, question_id, tag_id):
     pass
 
