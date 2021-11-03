@@ -65,3 +65,8 @@ def search_question(cursor, search_phrase):
 @database_common.connection_handler
 def edit_comment(cursor, edited_comment):
     pass
+
+
+@database_common.connection_handler
+def display_latest_questions(cursor, number_of_questions=5):
+    pass
