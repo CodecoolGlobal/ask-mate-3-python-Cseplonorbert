@@ -97,6 +97,11 @@ def sort_questions(cursor, order_by, order):
 
 
 @database_common.connection_handler
+def add_tag(cursor, tag_name):
+    pass
+
+
+@database_common.connection_handler
 def delete_tag(cursor, question_id, tag_id):
     pass
 
