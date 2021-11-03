@@ -100,7 +100,9 @@ def edit_comment(cursor, edited_comment):
 
 @database_common.connection_handler
 def display_latest_questions(cursor, number_of_questions=5):
-    pass
+    query = f"""SELECT * FROM question ORDER BY submission_time LIMIT '{number_of_questions}'"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
