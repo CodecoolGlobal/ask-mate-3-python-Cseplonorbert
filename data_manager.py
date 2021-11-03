@@ -98,8 +98,10 @@ def delete_tag(cursor, question_id, tag_id):
 
 
 @database_common.connection_handler
-def get_comments(cursor, datatype, data_id):
-    pass
+def get_comments(cursor):
+    query = """SELECT question_id, answer_id, message, submission_time, edited_count FROM comment"""
+    cursor.execute(query)
+    cursor.fetchall()
 
 
 @database_common.connection_handler
