@@ -111,10 +111,11 @@ def add_question_comment(question_id):
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
-def add_answer_comment(answer_id):
+def add_answer_comment(question_id, answer_id):
     if request.method == "POST":
-        request.form('answer_comment')
-        question_id = utils.get_question_id_by_answer_id(answer_id)
+        answer_comment = request.form['answer_comment']
+        answer_comment['edit_count'] = 0
+        data_manager.add_answer_comment(answer_comment, question_id, answer_id)
         return redirect(f"/question/{question_id}")
     return render_template("add_answer_comment.html")
 
