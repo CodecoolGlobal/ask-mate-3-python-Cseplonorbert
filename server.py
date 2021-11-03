@@ -112,7 +112,7 @@ def delete_answer(answer_id):
 def add_question_comment(question_id):
     if request.method == "POST":
         question_comment = request.form['comment']
-        question_comment["edit_count"] = 0
+        question_comment["edited_count"] = 0
         question_comment["question_id"] = question_id
         data_manager.add_new_question_comment(question_comment)
         return redirect(url_for('display_question', question_id=question_id))
@@ -123,7 +123,7 @@ def add_question_comment(question_id):
 def add_answer_comment(question_id, answer_id):
     if request.method == "POST":
         answer_comment = request.form['comment']
-        answer_comment['edit_count'] = 0
+        answer_comment['edited_count'] = 0
         data_manager.add_answer_comment(answer_comment, answer_id)
         return redirect(f"/question/{question_id}")
     return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
