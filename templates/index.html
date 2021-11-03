@@ -8,9 +8,8 @@
 {% block content %}
 
     <form action="/add_question">
-        <button type="submit">Add new question</button>
+        <button type="submit" class="button1">Add new question</button>
     </form>
-    <br>
     
     <form action="/list" method="get" enctype="text/plain">
         <label for="order_by">Sort questions by:</label>
@@ -21,7 +20,6 @@
             <option value="view_number">Number of view</option>
             <option value="vote_number">Number of votes</option>
         </select>
-
         <select name="order_direction" id="order_direction">
             <label for="order_direction">Order:</label>
             <option value="ASC">ASC</option>
@@ -30,32 +28,21 @@
         <button type="submit">Sort questions</button>
     </form>
     <br>
-    <table width="100%">
-        <th width="20px">ID</th>
-        <th width="120px">Submission Time</th>
-        <th width="100px">View number</th>
-        <th width="100px">Vote number</th>
-        <th width="10%">Title</th>
-        <th>Message</th>
-        <th>Image</th>
 
-        {% for question in questions %}
+
+    {% for question in questions %}
+        <table class="table1">
             <tr>
-                {% for key, value in question.items() %}
-                    <td>
-                        {% if key == "title" %}
-                            <a href="{{ url_for("display_question", question_id=question["id"]) }}">{{ value }}</a>
-                        {% elif key == "image" %}
-                            {% if value %}
-                                <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style="width: 150px">
-                            {% endif %}
-                        {% else %}
-                            {{ value }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
+                <td class="td_number">{{ question["view_number"] }}</td>
+                <td class="td_number">{{ question["vote_number"] }}</td>
+                <td class="td_title"><a href="{{ url_for("display_question", question_id=question["id"]) }}">{{ question["title"] }}</a></td>
             </tr>
-        {% endfor %}
-    </table>
+            <tr>
+                <td class="td_number">Views</td>
+                <td class="td_number">Votes</td>
+                <td class="td_date">Date: {{ question["submission_time"] }}</td>
+            </tr>
 
+        </table>
+    {% endfor %}
 {% endblock %}
