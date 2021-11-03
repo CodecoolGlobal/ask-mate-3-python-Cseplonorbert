@@ -101,6 +101,10 @@ def add_tag(cursor, tag_name):
     pass
 
 
+def add_tag_to_question(cursor, question_id, tag_id):
+    pass
+
+
 @database_common.connection_handler
 def delete_tag(cursor, question_id, tag_id):
     pass
