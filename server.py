@@ -64,6 +64,7 @@ def add_new_answer(question_id):
         answer["message"] = request.form["message"]
         answer["question_id"] = question_id
         data_handler.add_new_answer(answer)
+        data_manager.add_new_answer(answer)
     return redirect(f"/question/{question_id}")
 
 

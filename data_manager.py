@@ -19,3 +19,15 @@ def add_question(cursor, question):
                     '{question.get("image", "")}')"""
     cursor.execute(query)
 
+
+@database_common.connection_handler
+def add_new_answer(cursor, answer):
+    query = f"""
+        INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+        VALUES(CURRENT_DATE,
+                '{answer.get("vote_number",0)}',
+                '{answer.get("question_id", 0)}',
+                '{answer["message"]}',
+                '{answer.get("image", "")}')"""
+    cursor.execute(query)
+
