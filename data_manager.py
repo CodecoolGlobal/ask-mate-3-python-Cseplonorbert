@@ -75,3 +75,8 @@ def display_latest_questions(cursor, number_of_questions=5):
 @database_common.connection_handler
 def sort_questions(cursor, order_by, order):
     pass
+
+
+@database_common.connection_handler
+def delete_tag(cursor, question_id, tag_id):
+    pass
