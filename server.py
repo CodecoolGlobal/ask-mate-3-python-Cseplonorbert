@@ -14,8 +14,7 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
 @app.route("/", methods=["GET"])
 @app.route("/list", methods=["GET"])
 def main_page():
-    questions = data_handler.get_data_from_file()
-    questions = utils.convert_timestamps_to_date(questions)
+    questions = data_manager.get_questions()
     if request.args:
         order_by = request.args.get('order_by')
         order = request.args.get("order")
