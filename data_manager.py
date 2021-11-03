@@ -43,6 +43,11 @@ def add_answer_comment(cursor, answer_comment, question_id, answer_id):
 
 
 @database_common.connection_handler
+def get_questions(cursor):
+    pass
+
+
+@database_common.connection_handler
 def edit_question(cursor, question):
     pass
 
