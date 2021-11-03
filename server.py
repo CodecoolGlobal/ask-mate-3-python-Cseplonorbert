@@ -3,6 +3,7 @@ import data_handler
 import utils
 from werkzeug.utils import secure_filename
 import os
+import data_manager
 
 
 app = Flask(__name__)
@@ -46,6 +47,7 @@ def add_question():
         question['title'] = request.form['title']
         question['message'] = request.form['message']
         data_handler.add_question(question)
+        data_manager.add_question(question)
         return redirect('/list')
     elif request.method == "GET":
         return render_template("add_question.html")
@@ -64,6 +66,7 @@ def add_new_answer(question_id):
         answer["message"] = request.form["message"]
         answer["question_id"] = question_id
         data_handler.add_new_answer(answer)
+        data_manager.add_new_answer(answer)
     return redirect(f"/question/{question_id}")
 
 
