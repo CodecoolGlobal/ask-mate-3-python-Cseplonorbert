@@ -21,7 +21,7 @@ nav a{
 }
 .button1{
     position: fixed;
-    margin-top: 80px;
+    margin-top: 60px;
     background: rgb(0,102,204);
     color:rgb(255,255,255);
     font-size: 24px;
@@ -99,4 +99,27 @@ nav a{
     position: fixed;
     margin-top: 150px;
     margin-left: 20px;
+}
+.td-tab{
+    width:30%;
+}
+.td-comment{
+    border-bottom: 1px solid grey;
+}
+.td-right-bottom-border{
+    text-align: right;
+    border-bottom: 1px solid grey;
+}
+.td-answer{
+    width:100%;
+}
+div.form{
+    display: block;
+    text-align: center;
+}
+form{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
