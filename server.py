@@ -157,6 +157,11 @@ def answer_vote_down(answer_id):
     return redirect(f"/question/{question_id}")
 
 
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
