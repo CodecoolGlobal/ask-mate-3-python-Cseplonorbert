@@ -73,7 +73,7 @@
                         <td class="td-right"><a href="{{ url_for('edit_comment', comment_id=comment['id']) }}"> Edit comment</a></td>
                     </tr>
                 {% endif %}
-            {% endfor %}
+        {% endfor %}
     </table>
 
 
@@ -83,106 +83,38 @@
         </tr>
         {% for answer in answers %}
             <tr>
-
+                <td>{{ answer["message"] }}</td>
             </tr>
-        {% endfor %}
-    </table>
-    <table>
-        <tr>
-            <td>
-                Question title
-            </td>
-            <td>
-                {{ question['title'] }}
-            </td>
-         </tr>
-
-         <tr>
-             <td>
-                Message
-             </td>
-             <td>
-                {{ question['message'] }}
-             </td>
-         </tr>
-
-    </table>
-    <form action='{{ url_for("question_vote_up", question_id=question["id"]) }}' method = 'GET' >
-        <button type="submit"> vote up </button>
-    </form>
-    <p> Question vote number: {{ question['vote_number'] }} </p>
-    <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
-        <button type="submit"> vote down </button>
-    </form>
-    <br>
-    <a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add new comment</a><br>
-    <br>
-    <a href="/list">Back to the homepage</a><br>
-    <br>
-    <a href="{{ url_for('edit_question', question_id=question['id']) }}">Edit question</a><br>
-    <br>
-    <a href="{{ url_for('delete_question', question_id=question['id']) }}">DELETE THIS QUESTION</a>
-    <br>
-    {% if comments %}
-        <h2>Question comments:</h2>
-
-        <table>
-            <th>Submission time</th>
-            <th>Message</th>
-            <th>Edit counts</th>
-
-            {% for comment in comments %}
-                {% if comment["question_id"] == question["id"] %}
-                    <tr>
-                        <td>{{ comment["submission_time"] }}</td>
-                        <td>{{ comment["message"] }}</td>
-                        <td>{{ comment["edited_count"] }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    {% endif %}
-    <h2>Answers:</h2>
-
-    <table>
-        <th>ID</th>
-        <th>Submission time</th>
-        <th>Vote number</th>
-        <th>Message</th>
-        <th>Image</th>
-        <th>Vote up </th>
-        <th>Vote down </th>
-        <th>Delete answer link</th>
-
-        {% for answer in answers %}
+            {% if answer["image"] %}
+                <tr>
+                    <td><img src="{{ url_for('static', filename=answer['image']) }}" alt="{{ answer['image'] }}" style='width: 150px'></td>
+                </tr>
+            {% endif %}
             <tr>
-                {% for key,value in answer.items() %}
-                    <td>
-                        {% if key == 'image' %}
-                            {% if value %}
-                                <img src="{{ url_for('static', filename=value) }}" alt="{{ value }}" style='width: 150px'>
-                            {% endif %}
-                        {% elif key != 'question_id' %}
-                            {{ value }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
+                <td>Date {{ answer["submission_time"] }}</td>
+            </tr>
+            <tr>
+                <td>
+                     <form action='{{ url_for("answer_vote_down", answer_id=answer["id"]) }}' method = 'GET' >
+                        <button type="submit"> vote down </button>
+                    </form>
+                </td>
+                <td>Votes: {{ answer["vote_number"] }}</td>
                 <td>
                     <form action='{{ url_for("answer_vote_up", answer_id=answer["id"]) }}' method = 'GET' >
                         <button type="submit"> vote up </button>
                     </form>
                 </td>
-                <td>
-                    <form action='{{ url_for("answer_vote_down", answer_id=answer["id"]) }}' method = 'GET' >
-                        <button type="submit"> vote down </button>
-                    </form>
-                </td>
-                <td><a href="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="GET">Delete answer</a></td>
+            </tr>
+            <tr>
+                <td><a href="{{ url_for('edit_answer', answer_id=answer['id']) }}">Edit answer</a></td>
+                <td><a href="{{ url_for('delete_answer', answer_id=answer['is']) }}">Delete answer</a></td>
             </tr>
         {% endfor %}
     </table>
     <br>
-    <br>
+
+
     <form action='{{ url_for("add_new_answer", question_id=question["id"]) }}' method='POST' enctype='multipart/form-data'>
 
         <label for='message-input' > Add new answer: </label><br>
