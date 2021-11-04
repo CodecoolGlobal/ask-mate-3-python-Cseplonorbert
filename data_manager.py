@@ -43,6 +43,16 @@ def delete_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
+def delete_answer(cursor, answer_id):
+    query = f"""
+        DELETE FROM answer 
+        WHERE answer.id = '{answer_id}'
+        """
+
+    cursor.execute(query)
+
+
+@database_common.connection_handler
 def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
@@ -90,7 +100,10 @@ def edit_question(cursor, question):
 
 @database_common.connection_handler
 def vote_data(cursor, datatype, data_id, vote):
-    pass
+    query = f"""
+            UPDATE question SET vote_number =ISNULL(vote_number, 0) +1
+    
+    """
 
 
 @database_common.connection_handler
