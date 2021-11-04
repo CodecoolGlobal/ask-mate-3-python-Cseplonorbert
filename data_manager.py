@@ -162,3 +162,8 @@ def add_new_question_comment(cursor, comment):
         VALUES('{comment["question_id"]}', NULL, '{comment["message"]}',
         CURRENT_DATE, '{comment["edited_count"]}')"""
     cursor.execute(query)
+
+
+@database_common.connection_handler
+def delete_comment(cursor, comment_id):
+    pass
