@@ -134,7 +134,12 @@ def decrease_vote_number(cursor, question_id):
 
 @database_common.connection_handler
 def increase_view(cursor, question_id):
-    pass
+    query = f"""
+            UPDATE question 
+            SET view_number = view_number + 1 
+            WHERE id = '{question_id}'
+    """
+    cursor.execute(query)
 
 
 @database_common.connection_handler
