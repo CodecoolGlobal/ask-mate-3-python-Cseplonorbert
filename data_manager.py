@@ -149,9 +149,10 @@ def search_question(cursor, search_phrase):
     query = f"""
             SELECT id, submission_time, view_number, vote_number, title, message
             FROM question
-            WHERE title ILIKE '%_{search_phrase}_%' or message LIKE '%{search_phrase}%' 
+            WHERE title ILIKE '%{search_phrase}%' or message ILIKE '%{search_phrase}%' 
         """
     cursor.execute(query)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
