@@ -28,7 +28,8 @@ def get_all_questions():
 @app.route("/search", methods=["GET"])
 def search_questions():
     sequence = request.args.get("sequence")
-    pass
+    questions = data_manager.search_question(sequence)
+    return render_template("index.html", questions=questions)
 
 
 @app.route("/question/<question_id>/increase_view")
