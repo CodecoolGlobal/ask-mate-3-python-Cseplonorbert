@@ -97,7 +97,9 @@ def edit_answer(cursor, answer, answer_id):
 
 @database_common.connection_handler
 def get_answer_by_id(cursor, answer_id):
-    pass
+    query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -150,7 +152,6 @@ def search_question(cursor, search_phrase):
             WHERE title ILIKE '%_{search_phrase}_%' or message LIKE '%{search_phrase}%' 
         """
     cursor.execute(query)
-
 
 
 @database_common.connection_handler
