@@ -167,6 +167,11 @@ def edit_answer(answer_id):
     pass
 
 
+@app.route("/comments/<comment_id>/delete")
+def delete_comment(comment_id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
