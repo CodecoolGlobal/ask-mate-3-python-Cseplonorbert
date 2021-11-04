@@ -84,8 +84,15 @@ def answers_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
-def edit_answer(cursor, answer):
-    pass
+def edit_answer(cursor, answer, answer_id):
+    query = f"""
+            UPDATE answer SET
+            submission_time = CURRENT_DATE,
+            vote_number = 0,
+            message = '{answer.get("message")}',
+            image = '{answer.get("image", "")}'
+            WHERE answer.id ='{answer_id}'"""
+    cursor.execute(query)
 
 
 @database_common.connection_handler
@@ -94,7 +101,7 @@ def get_answer_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def edit_question(cursor, question,question_id):
+def edit_question(cursor, question, question_id):
     query = f"""
             UPDATE question SET 
             submission_time = CURRENT_DATE,

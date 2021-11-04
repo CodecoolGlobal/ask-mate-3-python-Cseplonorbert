@@ -167,7 +167,21 @@ def edit_comment(comment_id):
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
-    pass
+    answer = utils.get_answers_by_question_id(answer_id)
+    if request.method == "POST":
+        answer['title'] = request.form['title']
+        answer['message'] = request.form['message']
+        if request.files:
+            image = request.files["image"]
+            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                answer["image"] = f"images/{image.filename}"
+        data_handler.edit_answer(answer)
+        data_manager.edit_question(answer, answer_id)
+
+        return redirect(f"/question/{answer_id}")
+    return render_template("edit_answer.html", answer=answer)
 
 
 @app.route("/comments/<comment_id>/delete")
