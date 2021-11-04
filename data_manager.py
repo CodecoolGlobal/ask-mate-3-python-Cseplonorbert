@@ -94,8 +94,15 @@ def get_answer_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def edit_question(cursor, question):
-    pass
+def edit_question(cursor, question,question_id):
+    query = f"""
+            UPDATE question SET 
+            submission_time = CURRENT_DATE,
+            title = '{question["title"]}',
+            message = '{question["message"]}',
+            image = '{question.get("image", "")}'
+            WHERE question.id ='{question_id}'"""
+    cursor.execute(query)
 
 
 @database_common.connection_handler

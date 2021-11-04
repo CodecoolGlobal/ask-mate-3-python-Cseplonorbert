@@ -95,6 +95,7 @@ def edit_question(question_id):
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                 question["image"] = f"images/{image.filename}"
         data_handler.edit_question(question)
+        data_manager.edit_question(question, question_id)
 
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question)
