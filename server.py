@@ -162,6 +162,11 @@ def edit_comment(comment_id):
     pass
 
 
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
