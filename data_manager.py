@@ -144,7 +144,13 @@ def increase_view(cursor, question_id):
 
 @database_common.connection_handler
 def search_question(cursor, search_phrase):
-    pass
+    query = f"""
+            SELECT id, submission_time, view_number, vote_number, title, message
+            FROM question
+            WHERE title ILIKE '%_{search_phrase}_%' or message LIKE '%{search_phrase}%' 
+        """
+    cursor.execute(query)
+
 
 
 @database_common.connection_handler
