@@ -162,13 +162,13 @@ def answer_vote_down(answer_id, question_id):
     return redirect(f"/question/{question_id}")
 
 
-@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
-def edit_comment(comment_id):
+@app.route("/comment/<comment_id>/<question_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id, question_id):
     pass
 
 
-@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
-def edit_answer(answer_id):
+@app.route("/answer/<answer_id>/<question_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id, question_id):
     answer = utils.get_answers_by_question_id(answer_id)
     if request.method == "POST":
         answer['title'] = request.form['title']
@@ -181,12 +181,12 @@ def edit_answer(answer_id):
                 answer["image"] = f"images/{image.filename}"
         data_manager.edit_question(answer, answer_id)
 
-        return redirect(f"/question/{answer_id}")
+        return redirect(f"/question/{question_id}")
     return render_template("edit_answer.html", answer=answer)
 
 
-@app.route("/comments/<comment_id>/delete")
-def delete_comment(comment_id):
+@app.route("/comments/<comment_id>/<question_id>delete")
+def delete_comment(comment_id, question_id):
     pass
 
 
