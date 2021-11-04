@@ -78,7 +78,7 @@ def get_question_by_id(cursor, question_id):
 
 @database_common.connection_handler
 def answers_by_question_id(cursor, question_id):
-    query = f"""SELECT * FROM answer WHERE question_id ='{question_id}'"""
+    query = f"""SELECT * FROM answer WHERE question_id ='{question_id}' ORDER BY submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
 
