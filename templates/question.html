@@ -118,7 +118,7 @@
                             <td>{{ comment['message'] }}</td>
                             <td>{{ comment['submission_time'] }}</td>
                             <td>{{ comment['edit_count'] }}</td>
-                            <td><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"></a></td>
+                            <td><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}">Edit comment</a></td>
                         </tr>
                     {% endif %}
                     {% endfor %}
