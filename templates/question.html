@@ -108,7 +108,7 @@
             </tr>
             <tr>
                 <td><a href="{{ url_for('edit_answer', answer_id=answer['id']) }}">Edit answer</a></td>
-                <td><a href="{{ url_for('delete_answer', answer_id=answer['is']) }}">Delete answer</a></td>
+                <td><a href="{{ url_for('delete_answer', answer_id=answer['id'], question_id=answer['question_id']) }}">Delete answer</a></td>
             </tr>
         {% endfor %}
     </table>
