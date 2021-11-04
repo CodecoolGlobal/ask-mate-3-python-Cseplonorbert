@@ -5,8 +5,88 @@
 {% endblock %}
 
 {% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
 
-    <h1>Question:</h1>
+        <table class="table2">
+            <tr>
+                <td class="td_title2">{{ question["title"] }}</td>
+            </tr>
+            <tr>
+                <td class="td_date">Asked: {{ question["submission_time"] }}</td>
+                <td class="td_view">Viewed: {{ question["view_number"] }} times</td>
+            </tr>
+            <tr>
+                <br>
+            </tr>
+        </table>
+    <br>
+
+    <table class="table3">
+        <tr>
+            <td>{{ question["message"] }}</td>
+        </tr>
+        {% if question["image"] %}
+            <tr>
+                <td><img src="{{ url_for('static', filename=question["image"]) }}" alt="{{ question["image"] }}" style="width: 150px"></td>
+            </tr>
+        {%  endif %}
+
+    </table>
+    <br>
+    <table class="table4">
+        <tr>
+            <td>
+                <form action='{{ url_for("question_vote_up", question_id=question["id"]) }}' method = 'GET' >
+                <button type="submit"> vote up </button>
+                </form>
+            </td>
+            <td class="td-center">
+                Votes: {{ question['vote_number'] }}
+            </td>
+            <td class="td-right">
+                <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
+                    <button type="submit"> vote down </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add new comment</a></td>
+            <td class="td-center"><a href="{{ url_for('edit_question', question_id=question['id']) }}">Edit question</a></td>
+            <td class="td-right"><a href="{{ url_for('delete_question', question_id=question['id']) }}">DELETE THIS QUESTION</a></td>
+        </tr>
+    </table>
+    <table class="table5">
+        <tr>
+            <td>Comments:</td>
+        </tr>
+        {% for comment in comments %}
+                {% if comment["question_id"] == question["id"] %}
+                    <tr>
+                        <td>{{ comment["message"] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Added: {{ comment["submission_time"] }}</td>
+                        <td class="td-right">Edited {{ comment["edited_count"] }} times.</td>
+                        <td class="td-right"><a href="{{ url_for('edit_comment', comment_id=comment['id']) }}"> Edit comment</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+    </table>
+
+
+    <table class="table5">
+        <tr>
+            <td><h2>Answers</h2></td>
+        </tr>
+        {% for answer in answers %}
+            <tr>
+
+            </tr>
+        {% endfor %}
+    </table>
     <table>
         <tr>
             <td>
