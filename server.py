@@ -22,9 +22,14 @@ def main_page():
     return render_template("index.html", questions=questions)
 
 
+@app.route("/question/<question_id>/increase_view")
+def increase_view(question_id):
+    data_manager.increase_view(question_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
 @app.route("/question/<question_id>")
 def display_question(question_id):
-    data_manager.increase_view(question_id)
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.answers_by_question_id(question_id)
     comments = data_manager.get_comments()
