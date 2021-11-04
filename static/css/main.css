@@ -62,3 +62,36 @@ nav a{
     margin-top: 120px;
     margin-left: 20px;
 }
+.table2{
+    width: 50%;
+    margin: auto;
+    border-bottom: 1px solid black;
+}
+.td_title2{
+    font-size: 1.2em;
+    width: 80%;
+}
+.td_view{
+    width:70%;
+    text-align: left;
+}
+.table3{
+    width: 50%;
+    margin: auto;
+}
+.td-center{
+    text-align: center;
+}
+.table4{
+    width:50%;
+    margin:auto;
+    border-bottom: 1px solid grey;
+}
+.td-right{
+    text-align: right;
+}
+.table5{
+    width:50%;
+    margin: auto;
+    border-bottom: 1px solid grey;
+}
