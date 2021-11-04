@@ -164,7 +164,12 @@ def answer_vote_down(answer_id, question_id):
 
 @app.route("/comment/<comment_id>/<question_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id, question_id):
-    pass
+    comment = data_manager.get_comment_by_id(comment_id)[0]
+    if request.method == "POST":
+        comment["message"] = request.form.get("comment")
+        data_manager.edit_comment(comment)
+        return redirect(url_for("display_question", question_id=question_id))
+    return render_template("edit_comment.html", comment=comment, question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/<question_id>/edit", methods=["GET", "POST"])
