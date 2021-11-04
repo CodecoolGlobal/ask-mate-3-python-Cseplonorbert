@@ -33,6 +33,16 @@ def add_new_answer(cursor, answer):
 
 
 @database_common.connection_handler
+def delete_question_id(cursor, question_id):
+    query = f"""
+        DELETE FROM question 
+        WHERE question.id = '{question_id}'
+        """
+
+    cursor.execute(query)
+
+
+@database_common.connection_handler
 def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
