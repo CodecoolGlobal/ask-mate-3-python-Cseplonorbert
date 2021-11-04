@@ -11,7 +11,6 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
 
 
 @app.route("/", methods=["GET"])
-@app.route("/list", methods=["GET"])
 def main_page():
     questions = data_manager.get_questions()
     if request.args:
@@ -19,6 +18,17 @@ def main_page():
         order = request.args.get('order_direction')
         questions = data_manager.sort_questions(order_by, order)
     return render_template("index.html", questions=questions)
+
+
+@app.route("/list", methods=["GET"])
+def get_all_questions():
+    pass
+
+
+@app.route("/search", methods=["GET"])
+def search_questions():
+    sequence = request.args.get("sequence")
+    pass
 
 
 @app.route("/question/<question_id>/increase_view")
