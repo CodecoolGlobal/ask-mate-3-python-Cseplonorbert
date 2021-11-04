@@ -159,7 +159,7 @@ def edit_comment(cursor, edited_comment):
     query = f"""
          UPDATE comment
          SET message = '{edited_comment["message"]}', submission_time = CURRENT_DATE,
-         edited_count = ISNULL(edited_count, 0) + 1 
+         edited_count = edited_count + 1 
          WHERE id = '{edited_comment["id"]}'
          """
     cursor.execute(query)
@@ -206,7 +206,7 @@ def delete_tag(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_comments(cursor):
-    query = """SELECT question_id, answer_id, message, submission_time, edited_count FROM comment"""
+    query = """SELECT * FROM comment"""
     cursor.execute(query)
     return cursor.fetchall()
 
