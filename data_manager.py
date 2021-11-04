@@ -105,7 +105,13 @@ def search_question(cursor, search_phrase):
 
 @database_common.connection_handler
 def edit_comment(cursor, edited_comment):
-    pass
+    query = f"""
+         UPDATE comment
+         SET message = '{edited_comment["message"]}', submission_time = CURRENT_DATE,
+         edited_count = ISNULL(edited_count, 0) + 1 
+         WHERE id = '{edited_comment["id"]}'
+         """
+    cursor.execute(query)
 
 
 @database_common.connection_handler
@@ -166,4 +172,9 @@ def add_new_question_comment(cursor, comment):
 
 @database_common.connection_handler
 def delete_comment(cursor, comment_id):
-    pass
+    query = f"""
+       DELETE
+       FROM comment
+       WHERE id = '{comment_id}'
+       """
+    cursor.execute(query)
