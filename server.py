@@ -192,7 +192,8 @@ def edit_answer(answer_id, question_id):
 
 @app.route("/comments/<comment_id>/<question_id>delete")
 def delete_comment(comment_id, question_id):
-    pass
+    data_manager.delete_comment(comment_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 if __name__ == "__main__":
