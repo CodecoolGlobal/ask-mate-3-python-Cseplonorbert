@@ -92,7 +92,7 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = utils.get_question_by_id(question_id)
+    question = data_manager.get_question_by_id(question_id)
     if request.method == "POST":
         question['title'] = request.form['title']
         question['message'] = request.form['message']
@@ -105,7 +105,7 @@ def edit_question(question_id):
         data_manager.edit_question(question, question_id)
 
         return redirect(f"/question/{question_id}")
-    return render_template("edit_question.html", question=question)
+    return render_template("edit_question.html", question=question[0])
 
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
@@ -174,9 +174,8 @@ def edit_comment(comment_id, question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id, question_id):
-    answer = utils.get_answers_by_question_id(answer_id)
+    answer = data_manager.get_answer_by_id(answer_id)[0]
     if request.method == "POST":
-        answer['title'] = request.form['title']
         answer['message'] = request.form['message']
         if request.files:
             image = request.files["image"]
@@ -184,7 +183,7 @@ def edit_answer(answer_id, question_id):
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                 answer["image"] = f"images/{image.filename}"
-        data_manager.edit_question(answer, answer_id)
+        data_manager.edit_answer(answer, answer_id)
 
         return redirect(f"/question/{question_id}")
     return render_template("edit_answer.html", answer=answer)
