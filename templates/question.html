@@ -71,6 +71,7 @@
                         <td>Added: {{ comment["submission_time"] }}</td>
                         <td class="td-right">Edited {{ comment["edited_count"] }} times.</td>
                         <td class="td-right"><a href="{{ url_for('edit_comment', comment_id=comment['id']) }}"> Edit comment</a></td>
+                        <td><a href="{{ url_for('delete_comment', comment_id=comment['id']) }}">Delete comment</a></td>
                     </tr>
                 {% endif %}
         {% endfor %}
@@ -109,7 +110,18 @@
             <tr>
                 <td><a href="{{ url_for('edit_answer', answer_id=answer['id']) }}">Edit answer</a></td>
                 <td><a href="{{ url_for('delete_answer', answer_id=answer['id'], question_id=answer['question_id']) }}">Delete answer</a></td>
+                <td><a href="{{ url_for('add_answer_comment', answer_id=['id'], question_id=question['id']) }}">Add answer comment</a></td>
             </tr>
+                {% for comment in comments %}
+                    {% if comment["answer_id"] == answer['id'] %}
+                        <tr>
+                            <td>{{ comment['message'] }}</td>
+                            <td>{{ comment['submission_time'] }}</td>
+                            <td>{{ comment['edit_count'] }}</td>
+                            <td><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"></a></td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
         {% endfor %}
     </table>
     <br>
