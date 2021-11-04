@@ -122,8 +122,8 @@ def add_question_comment(question_id):
     return render_template("add_question_comment.html", question_id=question_id)
 
 
-@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
-def add_answer_comment(question_id, answer_id):
+@app.route("/answer/<answer_id>/<question_id>/new-comment", methods=["GET", "POST"])
+def add_answer_comment(answer_id, question_id):
     if request.method == "POST":
         answer_comment = dict()
         answer_comment["message"] = request.form["comment"]
