@@ -113,21 +113,21 @@ def edit_question(cursor, question, question_id):
 
 
 @database_common.connection_handler
-def increase_vote_number(cursor, question_id):
+def increase_vote_number(cursor, table, row_id):
     query = f"""
-            UPDATE question 
+            UPDATE {table} 
             SET vote_number = vote_number + 1
-            WHERE id = '{question_id}' 
+            WHERE id = '{row_id}' 
     """
     cursor.execute(query)
 
 
 @database_common.connection_handler
-def decrease_vote_number(cursor, question_id):
+def decrease_vote_number(cursor, table, row_id):
     query = f"""
-            UPDATE question 
+            UPDATE {table} 
             SET vote_number = vote_number - 1
-            WHERE id = '{question_id}'
+            WHERE id = '{row_id}'
     """
     cursor.execute(query)
 

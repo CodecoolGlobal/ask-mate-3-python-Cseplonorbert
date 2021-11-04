@@ -131,23 +131,25 @@ def add_answer_comment(answer_id, question_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
 def question_vote_up(question_id):
-    data_manager.increase_vote_number(question_id)
+    data_manager.increase_vote_number("question", question_id)
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/vote_down", methods=["GET"])
 def question_vote_down(question_id):
-    data_manager.decrease_vote_number(question_id)
+    data_manager.decrease_vote_number("question", question_id)
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_up", methods=["GET"])
 def answer_vote_up(answer_id, question_id):
+    data_manager.increase_vote_number("answer", answer_id)
     return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_down", methods=["GET"])
 def answer_vote_down(answer_id, question_id):
+    data_manager.decrease_vote_number("answer", answer_id)
     return redirect(f"/question/{question_id}")
 
 
