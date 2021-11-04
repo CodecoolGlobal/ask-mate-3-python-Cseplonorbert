@@ -96,13 +96,13 @@
             </tr>
             <tr>
                 <td>
-                     <form action='{{ url_for("answer_vote_down", answer_id=answer["id"]) }}' method = 'GET' >
+                     <form action='{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=question['id']) }}' method = 'GET' >
                         <button type="submit"> vote down </button>
                     </form>
                 </td>
                 <td>Votes: {{ answer["vote_number"] }}</td>
                 <td>
-                    <form action='{{ url_for("answer_vote_up", answer_id=answer["id"]) }}' method = 'GET' >
+                    <form action='{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=question['id']) }}' method = 'GET' >
                         <button type="submit"> vote up </button>
                     </form>
                 </td>
