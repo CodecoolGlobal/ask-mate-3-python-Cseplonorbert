@@ -40,7 +40,7 @@
             <tr>
                 <td class="td_number">{{ question["view_number"] }}</td>
                 <td class="td_number">{{ question["vote_number"] }}</td>
-                <td class="td_title"><a href="{{ url_for("display_question", question_id=question["id"]) }}">{{ question["title"] }}</a></td>
+                <td class="td_title"><a href="{{ url_for("increase_view", question_id=question["id"]) }}">{{ question["title"] }}</a></td>
             </tr>
             <tr>
                 <td class="td_number">Views</td>
