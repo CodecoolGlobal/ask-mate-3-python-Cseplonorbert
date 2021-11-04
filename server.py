@@ -98,9 +98,6 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
 def delete_answer(answer_id, question_id):
-    #question_id = utils.get_question_id_by_answer_id(answer_id)
-    #.delete_by_id(answer_id, "answer")
-
     data_manager.delete_answer(answer_id)
     return redirect(f"/question/{question_id}")
 
