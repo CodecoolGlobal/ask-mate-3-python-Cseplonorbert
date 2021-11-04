@@ -3,12 +3,16 @@
 {% block page_title %}{% endblock %}
 
 {% block content %}
-    <form action="{% block link %}{% endblock %}" method="post">
+    <div class="container">
+        <form action="{% block link %}{% endblock %}" method="post">
 
-        <label for="comment" name="comment">Comment:</label><br>
-        <textarea name="comment" id="comment" cols="30" rows="6"></textarea><br>
-        <br>
-        <button type="submit">Comment</button>
+            <label class="labels" for="comment" name="comment">Comment:</label><br>
+            <div class="textarea_style">
+                <textarea class="textarea" name="comment" id="comment" cols="30" rows="6"></textarea><br>
+            </div><br>
+            <br>
+            <button type="submit">Comment</button>
+        </form>
+    </div>
 
-    </form>
 {% endblock %}
