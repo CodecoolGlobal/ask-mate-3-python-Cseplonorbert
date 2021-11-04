@@ -1,0 +1,7 @@
+{% extends "add_new_comment.html" %}
+
+{% block page_title %}
+    Edit comment
+{% endblock %}
+{% block comment %}{{ comment['message'] }}{% endblock %}
+{% block link %}{{ url_for('edit_comment', comment_id=comment['id'], question_id=question_id) }}{% endblock %}
