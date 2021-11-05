@@ -18,13 +18,13 @@
             <label for="title_input" name="title" class="label_name">
                 <span class="title_name">Question Title</span>
             </label><br>
-            <textarea class="textarea" name="title" id="title_input" cols="15" rows="1">{% block question_title %}{% endblock %}</textarea><br>
+            <textarea class="textarea" name="title" id="title_input" cols="15" rows="1" placeholder="Question title">{% block question_title %}{% endblock %}</textarea><br>
             <br>
         </div>
     {% endblock %}
         <div class="textarea_question">
             <label for="question_input" name="message">Question:</label><br>
-            <textarea name="message" id="question_input" cols="30" rows="6" class="textarea_question" >{% block question_text%}{% endblock %}</textarea><br>
+            <textarea name="message" id="question_input" cols="30" rows="6" class="textarea_question" placeholder="Add your question here..." >{% block question_text%}{% endblock %}</textarea><br>
             <br>
         </div>
         <div class="custom-file">
