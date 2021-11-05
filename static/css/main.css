@@ -151,3 +151,30 @@ textarea{
     border-radius: 2px;
     font-size: 16px;
 }
+
+.form{
+    margin-top: 50px;
+    text-align: center;
+    margin-left: 20px;
+}
+
+.textarea_question {
+    margin-top: 50px;
+    text-align: center;
+    margin-left: 20px;
+}
+
+.custom-file {
+    margin-top: 50px;
+    text-align: center;
+    margin-left: 20px;
+}
+
+.button-image {
+    position: fixed;
+    margin-top: 60px;
+    font-size: 24px;
+    border: none;
+    border-radius: 8px;
+    margin-left: 40px;
+}
