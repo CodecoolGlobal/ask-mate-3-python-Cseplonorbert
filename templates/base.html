@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+    <br>
+    <br>
+    <br>
+    <div class="container">
     <h1>{% block h1 %}{% endblock %}</h1>
 
     <form action="{% block link %}{% endblock %}" method="post" enctype="multipart/form-data">
@@ -27,4 +31,5 @@
         <button type="submit">{% block button_name %}{% endblock %}</button>
 
     </form>
+    </div>>
 {% endblock %}
