@@ -25,7 +25,7 @@ def add_new_answer(cursor, answer):
     query = f"""
         INSERT INTO answer (submission_time, vote_number, question_id, message, image)
         VALUES(CURRENT_DATE,
-                '{answer.get("vote_number",0)}',
+                '{answer.get("vote_number", 0)}',
                 '{answer.get("question_id", 0)}',
                 '{answer["message"]}',
                 '{answer.get("image", "")}')"""
@@ -244,3 +244,13 @@ def get_answer_by_id(cursor, answer_id):
     query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_data(cursor, user_id):
+    cursor.execute("""
+                SELECT * FROM users
+                WHERE id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    user_data = cursor.fetchone()
+    return user_data
