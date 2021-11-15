@@ -50,12 +50,12 @@ CREATE TABLE comment (
     user_id integer
 );
 
-DROP TABLE IF EXISTS public.user;
-CREATE TABLE comment (
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE users (
     id serial NOT NULL,
     email text,
     password text,
-    submission_time timestamp without time zone,
+    submission_time timestamp without time zone
 );
 
 
