@@ -254,3 +254,13 @@ def get_user_data(cursor, user_id):
                    {'u_i': int(user_id)})
     user_data = cursor.fetchone()
     return user_data
+
+
+@database_common.connection_handler
+def get_related_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    related_answers = cursor.fetchall()
+    return related_answers
