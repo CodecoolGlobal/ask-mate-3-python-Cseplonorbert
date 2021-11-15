@@ -304,3 +304,13 @@ def count_related_answers(cursor, user_id):
                    {'u_i': int(user_id)})
     number_of_related_answers = cursor.fetchone()
     return number_of_related_answers
+
+
+@database_common.connection_handler
+def count_related_comments(cursor, user_id):
+    cursor.execute("""
+                    SELECT COUNT(user_id) FROM comment
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    number_of_related_comments = cursor.fetchall()
+    return number_of_related_comments
