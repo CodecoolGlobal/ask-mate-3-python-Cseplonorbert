@@ -1,6 +1,4 @@
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+import bcrypt
 
 
 def allowed_image(filename, allowed_extensions):
