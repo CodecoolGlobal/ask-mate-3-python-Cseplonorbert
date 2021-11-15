@@ -284,3 +284,13 @@ def get_related_comments(cursor, user_id):
                    {'u_i': int(user_id)})
     related_comments = cursor.fetchall()
     return related_comments
+
+
+@database_common.connection_handler
+def count_related_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT COUNT(user_id) FROM question
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    number_of_related_questions = cursor.fetchone()
+    return number_of_related_questions
