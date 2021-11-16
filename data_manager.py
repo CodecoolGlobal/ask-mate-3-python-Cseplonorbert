@@ -318,7 +318,7 @@ def count_related_comments(cursor, user_id):
 
 @database_common.connection_handler
 def get_user_info(cursor, email):
- cursor.execute("""
+    cursor.execute("""
         SELECT * FROM users
         WHERE email = %(e_l)s""", {'e_l': email})
 
