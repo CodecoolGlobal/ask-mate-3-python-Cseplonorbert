@@ -156,14 +156,28 @@ def add_answer_comment(answer_id, question_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
 def question_vote_up(question_id):
-    data_manager.increase_vote_number("question", question_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] != question['user_id']:
+            data_manager.increase_vote_number("question", question_id)
+            return redirect(url_for('display_question', question_id=question_id))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_down", methods=["GET"])
 def question_vote_down(question_id):
-    data_manager.decrease_vote_number("question", question_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] != question['user_id']:
+            data_manager.decrease_vote_number("question", question_id)
+            return redirect(url_for('display_question', question_id=question_id))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_up", methods=["GET"])
