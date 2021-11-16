@@ -322,3 +322,12 @@ def get_user_info(cursor, email):
     """
     cursor.execute(query)
     return cursor.fetchall()
+
+@database_common.connection_handler
+def registrate_user(cursor, email, password):
+    query = f"""
+        INSERT
+        INTO users (email, password, submission_time, reputation)
+        VALUES ('{email}', '{password}', NOW(), 0)
+        """
+    cursor.execute(query)
