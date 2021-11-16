@@ -96,20 +96,26 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = data_manager.get_question_by_id(question_id)[0]
-    if request.method == "POST":
-        question['title'] = request.form['title']
-        question['message'] = request.form['message']
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                question["image"] = f"images/{image.filename}"
-        data_manager.edit_question(question, question_id)
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if request.method == "POST":
+                question['title'] = request.form['title']
+                question['message'] = request.form['message']
+                if request.files:
+                    image = request.files["image"]
+                    if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                        filename = secure_filename(image.filename)
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                        question["image"] = f"images/{image.filename}"
+                data_manager.edit_question(question, question_id)
 
-        return redirect(f"/question/{question_id}")
-    return render_template("edit_question.html", question=question)
+                return redirect(url_for('display_question', question_id=question_id))
+            return render_template("edit_question.html", question=question)
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
