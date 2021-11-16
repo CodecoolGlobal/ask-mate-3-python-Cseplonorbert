@@ -82,7 +82,18 @@ def get_questions(cursor):
 
 @database_common.connection_handler
 def get_question_by_id(cursor, question_id):
-    query = f"""SELECT * FROM question WHERE id = '{question_id}'"""
+    query = f"""SELECT question.id,
+                question.submission_time,
+                view_number,
+                vote_number,
+                title,
+                message,
+                image,
+                user_id,
+                users.email
+                FROM question
+                JOIN users ON question.user_id = users.id
+                WHERE question.id = '{question_id}'"""
     cursor.execute(query)
     return cursor.fetchone()
 
