@@ -132,14 +132,18 @@ def add_question_comment(question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/new-comment", methods=["GET", "POST"])
 def add_answer_comment(answer_id, question_id):
-    if request.method == "POST":
-        answer_comment = dict()
-        answer_comment["message"] = request.form["comment"]
-        answer_comment['edited_count'] = 0
-        answer_comment['answer_id'] = answer_id
-        data_manager.add_answer_comment(answer_comment)
-        return redirect(f"/question/{question_id}")
-    return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
+    if 'email' in session:
+        if request.method == "POST":
+            answer_comment = dict()
+            answer_comment["message"] = request.form["comment"]
+            answer_comment['edited_count'] = 0
+            answer_comment['answer_id'] = answer_id
+            answer_comment['user_id'] = session['user_id']
+            data_manager.add_answer_comment(answer_comment)
+            return redirect(url_for('display_question', question_id=question_id))
+        return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
