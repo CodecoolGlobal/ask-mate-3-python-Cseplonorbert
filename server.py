@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, session, render_template, request, redirect, url_for,flash
 import utils
 from werkzeug.utils import secure_filename
 import os
@@ -7,6 +7,7 @@ import data_manager
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = f"{os.getcwd()}/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
+app.secret_key = '12345abc'
 
 
 @app.route("/", methods=["GET"])
@@ -212,6 +213,30 @@ def get_user_page(user_id):
                                number_of_related_answers=number_of_related_answers,
                                number_of_related_questions=number_of_related_questions)
     else:
+        return redirect(url_for('main_page'))
+
+@app.route("/login")
+def login_page():
+    return render_template('login.html')
+
+
+@app.route("/login_page", methods=['GET', 'POST'])
+def login_page_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    user_info = data_manager.get_user_info(email)
+    if not user_info:
+        flash("Invalid username or password ")
+        return redirect(url_for('login_page'))
+    else:
+        verified_password = utils.check_hash_password(user_info[0]['password'], password)
+
+    if not verified_password:
+        flash("Invalid username/password combination")
+        return redirect(url_for('login_page'))
+    else:
+        session['id'] = user_info[0]['id']
+        session['username'] = user_info[0]['username']
         return redirect(url_for('main_page'))
 
 

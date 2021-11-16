@@ -314,3 +314,11 @@ def count_related_comments(cursor, user_id):
                    {'u_i': int(user_id)})
     number_of_related_comments = cursor.fetchall()
     return number_of_related_comments
+
+
+def get_user_info(cursor, email):
+    query = f"""
+        SELECT * FROM users WHERE email='{email}'
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
