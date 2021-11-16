@@ -56,9 +56,9 @@ def delete_answer(cursor, answer_id):
 def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
-    INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+    INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
     VALUES(NULL, '{answer_comment["answer_id"]}', '{answer_comment["message"]}',
-    CURRENT_DATE, '{answer_comment["edited_count"]}')"""
+    CURRENT_DATE, '{answer_comment["edited_count"]}', '{answer_comment["user_id"]}')"""
     cursor.execute(query)
 
 
@@ -216,9 +216,9 @@ def get_comments(cursor):
 def add_new_question_comment(cursor, comment):
     query = f"""
         INSERT 
-        INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+        INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
         VALUES('{comment["question_id"]}', NULL, '{comment["message"]}',
-        CURRENT_DATE, '{comment["edited_count"]}')"""
+        CURRENT_DATE, '{comment["edited_count"]}', '{comment["user_id"]}')"""
     cursor.execute(query)
 
 
@@ -236,7 +236,7 @@ def delete_comment(cursor, comment_id):
 def get_comment_by_id(cursor, comment_id):
     query = f"""SELECT * FROM comment WHERE id='{comment_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
