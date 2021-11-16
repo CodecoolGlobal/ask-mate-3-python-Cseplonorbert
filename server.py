@@ -62,6 +62,7 @@ def add_question():
 
             question['title'] = request.form['title']
             question['message'] = request.form['message']
+            question['user_id'] = session['user_id']
             data_manager.add_question(question)
             return redirect('/list')
         elif request.method == "GET":
