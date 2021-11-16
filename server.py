@@ -229,7 +229,7 @@ def login_page_post():
         flash("Invalid username or password ")
         return redirect(url_for('login_page'))
     else:
-        verified_password = utils.check_hash_password(user_info[0]['password'], password)
+        verified_password = utils.verify_password(user_info[0]['password'], password)
 
     if not verified_password:
         flash("Invalid username/password combination")
