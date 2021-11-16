@@ -215,28 +215,34 @@ def get_user_page(user_id):
     else:
         return redirect(url_for('main_page'))
 
-@app.route("/login")
+
+@app.route("/login", methods=['GET', 'POST'])
 def login_page():
-    return render_template('login.html')
-
-
-@app.route("/login_page", methods=['GET', 'POST'])
-def login_page_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    user_info = data_manager.get_user_info(email)
-    if not user_info:
-        flash("Invalid username or password ")
-        return redirect(url_for('login_page'))
+    if request.method == "POST":
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user_info = data_manager.get_user_info(email)
+        if not user_info:
+            flash("Invalid username or password ")
+            return redirect(url_for('login_page'))
+        else:
+            verified_password = utils.verify_password(password, user_info[0]['password'])
+            if not verified_password:
+                flash("Invalid username/password combination")
+                return redirect(url_for('login_page'))
+            else:
+                session['user_id'] = user_info[0]['id']
+                session['email'] = user_info[0]['email']
+                return redirect(url_for('main_page'))
     else:
-        verified_password = utils.verify_password(user_info[0]['password'], password)
+        return render_template('login.html')
 
-    if not verified_password:
-        flash("Invalid username/password combination")
-        return redirect(url_for('login_page'))
-    else:
-        session['username'] = user_info[0]['username']
-        return redirect(url_for('main_page'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id')
+    session.pop('email', None)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":
