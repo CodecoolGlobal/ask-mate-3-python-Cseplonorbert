@@ -10,13 +10,14 @@ import database_common
 @database_common.connection_handler
 def add_question(cursor, question):
     query = f"""
-            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
             VALUES(CURRENT_DATE,
                     '{question.get("view_number", 0)}',
                     '{question.get("vote_number", 0)}',
                     '{question["title"]}',
                     '{question["message"]}',
-                    '{question.get("image", "")}')"""
+                    '{question.get("image", "")}',
+                    '{question["user_id"]}')"""
     cursor.execute(query)
 
 
