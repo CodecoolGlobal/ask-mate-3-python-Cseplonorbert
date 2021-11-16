@@ -244,3 +244,12 @@ def get_answer_by_id(cursor, answer_id):
     query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_info(cursor, email):
+    query = f"""
+        SELECT * FROM users WHERE email='{email}'
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
