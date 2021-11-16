@@ -252,7 +252,17 @@ def delete_tag(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_comments(cursor):
-    query = """SELECT * FROM comment"""
+    query = """SELECT comment.id,
+       comment.submission_time,
+       comment.question_id,
+       comment.answer_id,
+       message,
+       edited_count,
+       user_id,
+       users.email
+        FROM comment
+        JOIN users ON comment.user_id = users.id
+        ORDER BY comment.submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
 
