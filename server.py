@@ -116,14 +116,18 @@ def delete_answer(answer_id, question_id):
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_question_comment(question_id):
-    if request.method == "POST":
-        question_comment = dict()
-        question_comment["message"] = request.form['comment']
-        question_comment["edited_count"] = 0
-        question_comment["question_id"] = question_id
-        data_manager.add_new_question_comment(question_comment)
+    if 'email' in session:
+        if request.method == "POST":
+            question_comment = dict()
+            question_comment["message"] = request.form['comment']
+            question_comment["edited_count"] = 0
+            question_comment["question_id"] = question_id
+            question_comment["user_id"] = session['user_id']
+            data_manager.add_new_question_comment(question_comment)
+            return redirect(url_for('display_question', question_id=question_id))
+        return render_template("add_question_comment.html", question_id=question_id)
+    else:
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template("add_question_comment.html", question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/<question_id>/new-comment", methods=["GET", "POST"])
