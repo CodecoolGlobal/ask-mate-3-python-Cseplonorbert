@@ -28,7 +28,8 @@ def add_new_answer(cursor, answer):
                 '{answer.get("vote_number", 0)}',
                 '{answer.get("question_id", 0)}',
                 '{answer["message"]}',
-                '{answer.get("image", "")}')"""
+                '{answer.get("image", "")}',
+                '{answer.get("user_id")}')"""
     cursor.execute(query)
 
 
