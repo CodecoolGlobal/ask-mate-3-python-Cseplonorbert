@@ -114,8 +114,11 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
 def delete_answer(answer_id, question_id):
-    data_manager.delete_answer(answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] == session['user_id']:
+            data_manager.delete_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
