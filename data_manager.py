@@ -25,7 +25,7 @@ def add_new_answer(cursor, answer):
     query = f"""
         INSERT INTO answer (submission_time, vote_number, question_id, message, image)
         VALUES(CURRENT_DATE,
-                '{answer.get("vote_number",0)}',
+                '{answer.get("vote_number", 0)}',
                 '{answer.get("question_id", 0)}',
                 '{answer["message"]}',
                 '{answer.get("image", "")}')"""
@@ -247,6 +247,75 @@ def get_answer_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
+def get_user_data(cursor, user_id):
+    cursor.execute("""
+                SELECT * FROM users
+                WHERE id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    user_data = cursor.fetchone()
+    return user_data
+
+
+@database_common.connection_handler
+def get_related_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    related_answers = cursor.fetchall()
+    return related_answers
+
+
+@database_common.connection_handler
+def get_related_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    related_questions = cursor.fetchall()
+    return related_questions
+
+
+@database_common.connection_handler
+def get_related_comments(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    related_comments = cursor.fetchall()
+    return related_comments
+
+
+@database_common.connection_handler
+def count_related_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT COUNT(user_id) FROM question
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    number_of_related_questions = cursor.fetchone()
+    return number_of_related_questions
+
+
+@database_common.connection_handler
+def count_related_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT COUNT(user_id) FROM answer
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    number_of_related_answers = cursor.fetchone()
+    return number_of_related_answers
+
+
+@database_common.connection_handler
+def count_related_comments(cursor, user_id):
+    cursor.execute("""
+                    SELECT COUNT(user_id) FROM comment
+                    WHERE user_id = %(u_i)s""",
+                   {'u_i': int(user_id)})
+    number_of_related_comments = cursor.fetchall()
+    return number_of_related_comments
+
+
 def get_user_info(cursor, email):
     query = f"""
         SELECT * FROM users WHERE email='{email}'

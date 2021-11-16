@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 import os
 import data_manager
 
-
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = f"{os.getcwd()}/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
@@ -195,6 +194,26 @@ def delete_comment(comment_id, question_id):
     data_manager.delete_comment(comment_id)
     return redirect(url_for('display_question', question_id=question_id))
 
+
+@app.route("/user/<user_id>")
+def get_user_page(user_id):
+    if 'email' in session:
+        user_data = data_manager.get_user_data(user_id)
+        related_answers = data_manager.get_related_answers(user_id)
+        related_questions = data_manager.get_related_questions(user_id)
+        related_comments = data_manager.get_related_comments(user_id)
+        number_of_related_answers = data_manager.count_related_answers(user_id)
+        number_of_related_questions = data_manager.count_related_questions(user_id)
+        number_of_related_comments = data_manager.count_related_comments(user_id)
+        return render_template('user_page.html', user_data=user_data,
+                               related_answers=related_answers,
+                               related_questions=related_questions,
+                               related_comments=related_comments,
+                               number_of_related_comments=number_of_related_comments,
+                               number_of_related_answers=number_of_related_answers,
+                               number_of_related_questions=number_of_related_questions)
+    else:
+        return redirect(url_for('main_page'))
 
 @app.route("/login")
 def login_page():
