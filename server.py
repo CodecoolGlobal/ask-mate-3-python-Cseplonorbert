@@ -69,18 +69,22 @@ def add_question():
 
 @app.route("/question/<question_id>/new_answer", methods=["POST"])
 def add_new_answer(question_id):
-    answer = dict()
-    if request.method == "POST":
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                answer["image"] = f"images/{image.filename}"
-        answer["message"] = request.form["message"]
-        answer["question_id"] = question_id
-        data_manager.add_new_answer(answer)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = dict()
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+                if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    answer["image"] = f"images/{image.filename}"
+            answer["message"] = request.form["message"]
+            answer["question_id"] = question_id
+            answer["user_id"] = session["user_id"]
+            data_manager.add_new_answer(answer)
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/delete", methods=["GET"])
@@ -110,8 +114,11 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
 def delete_answer(answer_id, question_id):
-    data_manager.delete_answer(answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] == session['user_id']:
+            data_manager.delete_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
@@ -160,14 +167,20 @@ def question_vote_down(question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/vote_up", methods=["GET"])
 def answer_vote_up(answer_id, question_id):
-    data_manager.increase_vote_number("answer", answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] != session['user_id']:
+            data_manager.increase_vote_number("answer", answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_down", methods=["GET"])
 def answer_vote_down(answer_id, question_id):
-    data_manager.decrease_vote_number("answer", answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] != session['user_id']:
+            data_manager.decrease_vote_number("answer", answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/comment/<comment_id>/<question_id>/edit", methods=["GET", "POST"])
@@ -185,19 +198,25 @@ def edit_comment(comment_id, question_id):
 
 @app.route("/answer/<answer_id>/<question_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id, question_id):
-    answer = data_manager.get_answer_by_id(answer_id)[0]
-    if request.method == "POST":
-        answer['message'] = request.form['message']
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                answer["image"] = f"images/{image.filename}"
-        data_manager.edit_answer(answer, answer_id)
-
-        return redirect(f"/question/{question_id}")
-    return render_template("edit_answer.html", answer=answer)
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if session['user_id'] == answer['user_id']:
+            if request.method == "POST":
+                answer['message'] = request.form['message']
+                if request.files:
+                    image = request.files["image"]
+                    if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                        filename = secure_filename(image.filename)
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                        answer["image"] = f"images/{image.filename}"
+                data_manager.edit_answer(answer, answer_id)
+                return redirect(url_for('display_question', question_id=question_id))
+            else:
+                return render_template("edit_answer.html", answer=answer)
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/comments/<comment_id>/<question_id>delete")
