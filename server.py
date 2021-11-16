@@ -202,7 +202,10 @@ def edit_answer(answer_id, question_id):
 
 @app.route("/comments/<comment_id>/<question_id>delete")
 def delete_comment(comment_id, question_id):
-    data_manager.delete_comment(comment_id)
+    if 'email' in session:
+        comment = data_manager.get_comment_by_id(comment_id)
+        if comment['user_id'] == session['user_id']:
+            data_manager.delete_comment(comment_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 
