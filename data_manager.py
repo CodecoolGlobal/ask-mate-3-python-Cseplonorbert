@@ -236,7 +236,7 @@ def delete_comment(cursor, comment_id):
 def get_comment_by_id(cursor, comment_id):
     query = f"""SELECT * FROM comment WHERE id='{comment_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
