@@ -12,6 +12,14 @@
         </nav>
     </header>
 
+    <div class="login_container">
+        {% if 'email' in session %}
+            <a href="{{ url_for('logout') }}">Log out</a>
+        {% else %}
+            <a href="{{ url_for('login_page') }}">Login</a>
+        {% endif %}
+    </div>
+
     <section>
         {% block content %}{% endblock %}
     </section>

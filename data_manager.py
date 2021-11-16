@@ -316,12 +316,14 @@ def count_related_comments(cursor, user_id):
     return number_of_related_comments
 
 
+@database_common.connection_handler
 def get_user_info(cursor, email):
-    query = f"""
-        SELECT * FROM users WHERE email='{email}'
-    """
-    cursor.execute(query)
+ cursor.execute("""
+        SELECT * FROM users
+        WHERE email = %(e_l)s""", {'e_l': email})
+
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def registrate_user(cursor, email, password):

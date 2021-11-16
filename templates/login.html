@@ -3,7 +3,10 @@
     Login Page
 {% endblock %}
 {% block content %}
-    <form action="login_page" method="post">
+    <br>
+     <br>
+     <br>
+    <form action="{{ url_for('login_page') }}" method="post">
         <label for="email"></label>
         <input type="email" name="email" id="email" required placeholder="Enter email"><br><br>
         <label for="password"></label>
