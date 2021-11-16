@@ -49,22 +49,25 @@ def display_question(question_id):
 
 @app.route("/add_question", methods=["GET", "POST"])
 def add_question():
-    if request.method == "POST":
-        question = dict()
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
+    if 'email' in session:
+        if request.method == "POST":
+            question = dict()
+            if request.files:
+                image = request.files["image"]
+                if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                    filename = secure_filename(image.filename)
 
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                question["image"] = f"images/{image.filename}"
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    question["image"] = f"images/{image.filename}"
 
-        question['title'] = request.form['title']
-        question['message'] = request.form['message']
-        data_manager.add_question(question)
-        return redirect('/list')
-    elif request.method == "GET":
-        return render_template("add_question.html")
+            question['title'] = request.form['title']
+            question['message'] = request.form['message']
+            data_manager.add_question(question)
+            return redirect('/list')
+        elif request.method == "GET":
+            return render_template("add_question.html")
+    else:
+        return redirect(url_for('main_page'))
 
 
 @app.route("/question/<question_id>/new_answer", methods=["POST"])
