@@ -241,13 +241,6 @@ def get_comment_by_id(cursor, comment_id):
 
 
 @database_common.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
 def get_user_data(cursor, user_id):
     cursor.execute("""
                 SELECT * FROM users
