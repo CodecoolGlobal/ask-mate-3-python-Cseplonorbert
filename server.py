@@ -235,7 +235,6 @@ def login_page_post():
         flash("Invalid username/password combination")
         return redirect(url_for('login_page'))
     else:
-        session['id'] = user_info[0]['id']
         session['username'] = user_info[0]['username']
         return redirect(url_for('main_page'))
 
