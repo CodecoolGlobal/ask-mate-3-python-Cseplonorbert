@@ -243,7 +243,11 @@ def login_page_post():
 @app.route("/registration", methods=['GET', 'POST'])
 def registrate():
     if request.method == 'POST':
-        pass
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_hashed = utils.hash_password(password)
+        data_manager.registrate_user(email, password_hashed)
+        return redirect("/")
     elif request.method == 'GET':
         return render_template('registration.html')
 
