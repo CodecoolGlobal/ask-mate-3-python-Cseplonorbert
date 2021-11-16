@@ -201,7 +201,7 @@ def login_page():
     return render_template('login.html')
 
 
-@app.route("/login_page", methods=['GET','POST'])
+@app.route("/login_page", methods=['GET', 'POST'])
 def login_page_post():
     email = request.form.get('email')
     password = request.form.get('password')
