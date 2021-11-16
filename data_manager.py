@@ -216,9 +216,9 @@ def get_comments(cursor):
 def add_new_question_comment(cursor, comment):
     query = f"""
         INSERT 
-        INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+        INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
         VALUES('{comment["question_id"]}', NULL, '{comment["message"]}',
-        CURRENT_DATE, '{comment["edited_count"]}')"""
+        CURRENT_DATE, '{comment["edited_count"]}', '{comment["user_id"]}')"""
     cursor.execute(query)
 
 
