@@ -23,7 +23,7 @@ def add_question(cursor, question):
 @database_common.connection_handler
 def add_new_answer(cursor, answer):
     query = f"""
-        INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+        INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
         VALUES(CURRENT_DATE,
                 '{answer.get("vote_number", 0)}',
                 '{answer.get("question_id", 0)}',
@@ -100,7 +100,7 @@ def edit_answer(cursor, answer, answer_id):
 def get_answer_by_id(cursor, answer_id):
     query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
