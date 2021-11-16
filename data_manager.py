@@ -67,14 +67,14 @@ def add_answer_comment(cursor, answer_comment):
 def get_questions(cursor):
     query = f"""SELECT * FROM question"""
     cursor.execute(query)
-    return cursor.fetchone()
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
 def get_question_by_id(cursor, question_id):
     query = f"""SELECT * FROM question WHERE id = '{question_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
