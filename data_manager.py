@@ -65,7 +65,17 @@ def add_answer_comment(cursor, answer_comment):
 
 @database_common.connection_handler
 def get_questions(cursor):
-    query = f"""SELECT * FROM question"""
+    query = f"""SELECT question.id,
+       question.submission_time,
+       view_number,
+       vote_number,
+       title,
+       message,
+       image,
+       user_id,
+       users.email
+        FROM question
+        JOIN users ON question.user_id = users.id;"""
     cursor.execute(query)
     return cursor.fetchall()
 
