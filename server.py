@@ -89,9 +89,15 @@ def add_new_answer(question_id):
 
 @app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
-    if request.method == 'GET':
-        data_manager.delete_question_id(question_id)
-        return redirect('/list')
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            data_manager.delete_question_id(question_id)
+            return redirect(url_for('main_page'))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
