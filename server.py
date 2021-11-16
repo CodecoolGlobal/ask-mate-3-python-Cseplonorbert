@@ -245,6 +245,18 @@ def logout():
     return redirect(url_for('main_page'))
 
 
+@app.route("/registration", methods=['GET', 'POST'])
+def registrate():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_hashed = utils.hash_password(password)
+        data_manager.registrate_user(email, password_hashed)
+        return redirect("/")
+    elif request.method == 'GET':
+        return render_template('registration.html')
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',

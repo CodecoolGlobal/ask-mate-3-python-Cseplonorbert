@@ -318,8 +318,18 @@ def count_related_comments(cursor, user_id):
 
 @database_common.connection_handler
 def get_user_info(cursor, email):
-    cursor.execute("""
+ cursor.execute("""
         SELECT * FROM users
         WHERE email = %(e_l)s""", {'e_l': email})
 
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def registrate_user(cursor, email, password):
+    query = f"""
+        INSERT
+        INTO users (email, password, submission_time, reputation)
+        VALUES ('{email}', '{password}', NOW(), 0)
+        """
+    cursor.execute(query)
