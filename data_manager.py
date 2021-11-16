@@ -179,7 +179,19 @@ def edit_comment(cursor, edited_comment):
 
 @database_common.connection_handler
 def display_latest_questions(cursor, number_of_questions=5):
-    query = f"""SELECT * FROM question ORDER BY submission_time LIMIT '{number_of_questions}'"""
+    query = f"""SELECT question.id,
+        question.submission_time,
+        view_number,
+        vote_number,
+        title,
+        message,
+        image,
+        user_id,
+        users.email
+        FROM question
+        JOIN users ON question.user_id = users.id
+        ORDER BY submission_time 
+        LIMIT '{number_of_questions}'"""
     cursor.execute(query)
     return cursor.fetchall()
 
