@@ -56,9 +56,9 @@ def delete_answer(cursor, answer_id):
 def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
-    INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+    INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
     VALUES(NULL, '{answer_comment["answer_id"]}', '{answer_comment["message"]}',
-    CURRENT_DATE, '{answer_comment["edited_count"]}')"""
+    CURRENT_DATE, '{answer_comment["edited_count"]}', '{answer_comment["user_id"]}')"""
     cursor.execute(query)
 
 
