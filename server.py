@@ -69,18 +69,21 @@ def add_question():
 
 @app.route("/question/<question_id>/new_answer", methods=["POST"])
 def add_new_answer(question_id):
-    answer = dict()
-    if request.method == "POST":
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                answer["image"] = f"images/{image.filename}"
-        answer["message"] = request.form["message"]
-        answer["question_id"] = question_id
-        data_manager.add_new_answer(answer)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = dict()
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+                if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    answer["image"] = f"images/{image.filename}"
+            answer["message"] = request.form["message"]
+            answer["question_id"] = question_id
+            answer["user_id"] = session["user_id"]
+            data_manager.add_new_answer(answer)
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/delete", methods=["GET"])
