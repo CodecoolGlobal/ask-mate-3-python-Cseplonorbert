@@ -240,6 +240,14 @@ def login_page_post():
         return redirect(url_for('main_page'))
 
 
+@app.route("/registration", methods=['GET', 'POST'])
+def registrate():
+    if request.method == 'POST':
+        pass
+    elif request.method == 'GET':
+        return render_template('registration.html')
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
