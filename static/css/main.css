@@ -13,11 +13,11 @@ nav{
 nav ul{
     display: flex;
     margin-top: auto;
-    margin-left: 16%;
-    padding: 0 100px;
+    padding: 0 190px;
 }
 nav ul li {
     list-style: none;
+    margin: 0 auto;
 }
 nav ul li a {
     display: block;
@@ -99,4 +99,44 @@ input[type=submit]:hover {
     right: 0px;
     width: 150px;
     margin-top: 80px;
+}
+.container {
+    position: fixed;
+    width: 20%;
+    margin-top: 80px;
+    margin-left: 40%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+.container form {
+    margin: auto;
+}
+.container textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.container input[type=submit] {
+    background-color: #4CAF50;
+    width: 100%;
+    color: white;
+    padding: 15px 15px;
+    border: none;
+    margin: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.container input[type=text]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
