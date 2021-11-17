@@ -381,3 +381,37 @@ def registrate_user(cursor, email, password):
         VALUES ('{email}', '{password}', NOW(), 0)
         """
     cursor.execute(query)
+
+
+@database_common.connection_handler
+def increase_reputation(cursor, table, row_id):
+    if table == "question":
+        query = f"""
+                UPDATE users 
+                SET reputation = reputation + 5
+                WHERE id = '{table}'.user_id 
+        """
+    elif table == "answer":
+        query = f"""
+                UPDATE users
+                SET reputation = reputation + 10
+                WHERE id = '{table}'.user_id
+        """
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def decrease_reputation(cursor, table, row_id):
+    if table == "question":
+        query = f"""
+                UPDATE users 
+                SET reputation = reputation - 2
+                WHERE id = '{table}'.user_id 
+        """
+    elif table == "answer":
+        query = f"""
+                UPDATE users
+                SET reputation = reputation - 2
+                WHERE id = '{table}'.user_id
+        """
+    cursor.execute(query)
