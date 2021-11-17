@@ -243,9 +243,10 @@ def login_page_post():
 
 @app.route("/users")
 def users():
-    users_data = data_manager.get_all_user_data()
-    print(users_data)
-    return render_template("users.html", users_data=users_data)
+    if 'email' in session:
+        users_data = data_manager.get_all_user_data()
+        return render_template("users.html", users_data=users_data)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":
