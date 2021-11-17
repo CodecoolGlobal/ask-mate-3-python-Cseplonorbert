@@ -175,6 +175,7 @@ def question_vote_up(question_id):
         question = data_manager.get_question_by_id(question_id)
         if session['user_id'] != question['user_id']:
             data_manager.increase_vote_number("question", question_id)
+            data_manager.increase_reputation("question", question['user_id'])
             return redirect(url_for('display_question', question_id=question_id))
         else:
             return redirect(url_for('display_question', question_id=question_id))
@@ -188,6 +189,7 @@ def question_vote_down(question_id):
         question = data_manager.get_question_by_id(question_id)
         if session['user_id'] != question['user_id']:
             data_manager.decrease_vote_number("question", question_id)
+            data_manager.decrease_reputation(question['user_id'])
             return redirect(url_for('display_question', question_id=question_id))
         else:
             return redirect(url_for('display_question', question_id=question_id))
@@ -201,6 +203,7 @@ def answer_vote_up(answer_id, question_id):
         answer = data_manager.get_answer_by_id(answer_id)
         if answer['user_id'] != session['user_id']:
             data_manager.increase_vote_number("answer", answer_id)
+            data_manager.increase_reputation("answer", answer['user_id'])
     return redirect(url_for('display_question', question_id=question_id))
 
 
@@ -210,6 +213,7 @@ def answer_vote_down(answer_id, question_id):
         answer = data_manager.get_answer_by_id(answer_id)
         if answer['user_id'] != session['user_id']:
             data_manager.decrease_vote_number("answer", answer_id)
+            data_manager.decrease_reputation(answer['user_id'])
     return redirect(url_for('display_question', question_id=question_id))
 
 
