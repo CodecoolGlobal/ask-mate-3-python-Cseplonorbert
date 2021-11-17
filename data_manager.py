@@ -389,13 +389,21 @@ def increase_reputation(cursor, table, row_id):
         query = f"""
                 UPDATE users 
                 SET reputation = reputation + 5
-                WHERE id = '{table}'.user_id 
+                WHERE {table}.user_id =
+                (SELECT user_id
+                FROM {table}
+                WHERE id = {row_id}
+                )
         """
     elif table == "answer":
         query = f"""
                 UPDATE users
                 SET reputation = reputation + 10
-                WHERE id = '{table}'.user_id
+                WHERE {table}.user_id =
+                (SELECT user_id
+                FROM {table}
+                WHERE id = {row_id}
+                )
         """
     cursor.execute(query)
 
@@ -406,12 +414,20 @@ def decrease_reputation(cursor, table, row_id):
         query = f"""
                 UPDATE users 
                 SET reputation = reputation - 2
-                WHERE id = '{table}'.user_id 
+                WHERE {table}.user_id  =
+                (SELECT user_id
+                FROM {table}
+                WHERE id = {row_id}
+                )
         """
     elif table == "answer":
         query = f"""
                 UPDATE users
                 SET reputation = reputation - 2
-                WHERE id = '{table}'.user_id
+                WHERE {table}.user_id =
+                (SELECT user_id
+                FROM {table}
+                WHERE id = {row_id}
+                )
         """
     cursor.execute(query)
