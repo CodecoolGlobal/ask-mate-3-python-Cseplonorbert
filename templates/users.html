@@ -1,19 +1,17 @@
 {% extends 'layout.html' %}
+{% block page_title %}Users{% endblock %}
 {% block content %}
     <table>
-    <th>Username</th><th>Registration date</th><th>Number of asked questions</th>
+        <tr>
+        <th>Username</th><th>Registration date</th><th>Number of asked questions</th>
         <th>Number of answers</th><th>Number of comments</th><th>Reputation</th>
-        {% for user in users  %}
+        </tr>
+            {% for user in users_data  %}
             <tr>
-            {% for row in user %}
-                <td></td>
-            {% endfor %}
+            <td>{{ user['username'] }}</td><td>{{ user['registration_date'] }}</td>
+            <td>{{ user['number_of_asked_questions'] }}</td><td>{{ user['number_of_comments'] }}</td>
+            <td>{{ user['number_of_answers'] }}</td><td>{{ user['reputation'] }}</td>
             </tr>
         {% endfor %}
-
-
     </table>
-
-
-
 {% endblock %}
