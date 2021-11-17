@@ -3,18 +3,12 @@
 {% block page_title %}{% endblock %}
 
 {% block content %}
-    <br>
-    <br>
-    <br>
     <div class="container">
         <form action="{% block link %}{% endblock %}" method="post">
 
-            <label class="labels" for="comment" name="comment">Comment:</label><br>
-            <div class="textarea_style">
+            <label for="comment" name="comment">Comment:</label><br>
                 <textarea class="textarea" name="comment" id="comment" cols="30" rows="6" placeholder="Add your comment here...">{% block comment %}{% endblock %}</textarea><br>
-            </div><br>
-            <br>
-            <button type="submit">Comment</button>
+            <input type="submit" value="Comment">
         </form>
     </div>
 
