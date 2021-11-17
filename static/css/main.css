@@ -110,7 +110,7 @@ input[type=submit]:hover {
     margin-left: 25%;
     margin-top: 80px;
     border-bottom: 1px solid black;
-    position: relative;
+    position: page;
 }
 .td_title2{
     font-size: 1.2em;
@@ -126,6 +126,7 @@ input[type=submit]:hover {
 }
 .td_question_message {
     width: 90%;
+    padding: 0 20px;
 }
 .td-center{
     text-align: center;
