@@ -215,6 +215,7 @@ def get_user_page(user_id):
     else:
         return redirect(url_for('main_page'))
 
+
 @app.route("/login")
 def login_page():
     return render_template('login.html')
@@ -238,6 +239,11 @@ def login_page_post():
         session['id'] = user_info[0]['id']
         session['username'] = user_info[0]['username']
         return redirect(url_for('main_page'))
+
+
+@app.route("/users")
+def users():
+    pass
 
 
 if __name__ == "__main__":
