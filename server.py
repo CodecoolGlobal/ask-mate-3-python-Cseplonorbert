@@ -320,6 +320,14 @@ def registrate():
         return render_template('registration.html')
 
 
+@app.route("/users")
+def users():
+    if 'email' in session:
+        users_data = data_manager.get_all_user_data()
+        return render_template("users.html", users_data=users_data)
+    return redirect(url_for('main_page'))
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
