@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <table>
+    <th>Username</th><th>Registration date</th><th>Number of asked questions</th>
+        <th>Number of answers</th><th>Number of comments</th><th>Reputation</th>
+        {% for user in users  %}
+            <tr>
+            {% for row in user %}
+                <td></td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+
+
+{% endblock %}
