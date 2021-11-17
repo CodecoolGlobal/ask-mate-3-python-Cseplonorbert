@@ -7,9 +7,15 @@
 
 {% block content %}
 
-    <form action="/add_question">
-        <button type="submit" class="button1">Add new question</button>
-    </form>
+    <form action="/registration">
+        <button type="submit" class="button1">Registration</button>
+    </form><br><br>
+
+    {% if 'email' in session %}
+        <form action="/add_question">
+            <button type="submit" class="button1">Add new question</button>
+        </form>
+    {% endif %}
 
     <form action="/search" class="form1">
         <label for="sequence">Search in questions</label><br>
@@ -51,7 +57,7 @@
             <tr>
                 <td class="td_number">Views</td>
                 <td class="td_number">Votes</td>
-                <td class="td_date">Date: {{ question["submission_time"] }}</td>
+                <td class="td_date">Date: {{ question["submission_time"] }} Added by: {{ question['email'] }}</td>
             </tr>
 
         </table>

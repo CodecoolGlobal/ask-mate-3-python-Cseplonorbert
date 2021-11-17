@@ -15,7 +15,7 @@
                 <td class="td_title2">{{ question["title"] }}</td>
             </tr>
             <tr>
-                <td class="td_date">Asked: {{ question["submission_time"] }}</td>
+                <td class="td_date">Asked: {{ question["submission_time"] }} Added by: {{ question['email'] }}</td>
                 <td class="td_view">Viewed: {{ question["view_number"] }} times</td>
             </tr>
             <tr>
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td class="td-tab"></td>
-                        <td class="td-comment">Added: {{ comment["submission_time"] }}</td>
+                        <td class="td-comment">Added: {{ comment["submission_time"] }} Added by: {{ comment['email'] }}</td>
                         <td class="td-right-bottom-border">Edited {{ comment["edited_count"] }} times.</td>
                         <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"> Edit comment</a></td>
                         <td class="td-right-bottom-border"><a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}">Delete comment</a></td>
@@ -96,7 +96,7 @@
                 </tr>
             {% endif %}
             <tr>
-                <td>Date {{ answer["submission_time"] }}</td>
+                <td>Date {{ answer["submission_time"] }} Added by: {{ answer['email'] }}</td>
             </tr>
         </table>
         <table class="table3">
@@ -129,7 +129,7 @@
                         </tr>
                         <tr>
                             <td class="td-tab"></td>
-                            <td class="td-comment">Added: {{ comment["submission_time"] }}</td>
+                            <td class="td-comment">Added: {{ comment["submission_time"] }} Added by: {{ comment['email'] }}</td>
                             <td class="td-right-bottom-border">Edited {{ comment["edited_count"] }} times.</td>
                             <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"> Edit comment</a></td>
                             <td class="td-right-bottom-border"><a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}">Delete comment</a></td>

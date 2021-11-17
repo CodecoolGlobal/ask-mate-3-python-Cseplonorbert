@@ -10,25 +10,27 @@ import database_common
 @database_common.connection_handler
 def add_question(cursor, question):
     query = f"""
-            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
             VALUES(CURRENT_DATE,
                     '{question.get("view_number", 0)}',
                     '{question.get("vote_number", 0)}',
                     '{question["title"]}',
                     '{question["message"]}',
-                    '{question.get("image", "")}')"""
+                    '{question.get("image", "")}',
+                    '{question["user_id"]}')"""
     cursor.execute(query)
 
 
 @database_common.connection_handler
 def add_new_answer(cursor, answer):
     query = f"""
-        INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+        INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
         VALUES(CURRENT_DATE,
                 '{answer.get("vote_number", 0)}',
                 '{answer.get("question_id", 0)}',
                 '{answer["message"]}',
-                '{answer.get("image", "")}')"""
+                '{answer.get("image", "")}',
+                '{answer.get("user_id")}')"""
     cursor.execute(query)
 
 
@@ -56,29 +58,60 @@ def delete_answer(cursor, answer_id):
 def add_answer_comment(cursor, answer_comment):
     query = f"""
     INSERT 
-    INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+    INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
     VALUES(NULL, '{answer_comment["answer_id"]}', '{answer_comment["message"]}',
-    CURRENT_DATE, '{answer_comment["edited_count"]}')"""
+    CURRENT_DATE, '{answer_comment["edited_count"]}', '{answer_comment["user_id"]}')"""
     cursor.execute(query)
 
 
 @database_common.connection_handler
 def get_questions(cursor):
-    query = f"""SELECT * FROM question"""
+    query = f"""SELECT question.id,
+       question.submission_time,
+       view_number,
+       vote_number,
+       title,
+       message,
+       image,
+       user_id,
+       users.email
+        FROM question
+        JOIN users ON question.user_id = users.id;"""
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @database_common.connection_handler
 def get_question_by_id(cursor, question_id):
-    query = f"""SELECT * FROM question WHERE id = '{question_id}'"""
+    query = f"""SELECT question.id,
+                question.submission_time,
+                view_number,
+                vote_number,
+                title,
+                message,
+                image,
+                user_id,
+                users.email
+                FROM question
+                JOIN users ON question.user_id = users.id
+                WHERE question.id = '{question_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
 def answers_by_question_id(cursor, question_id):
-    query = f"""SELECT * FROM answer WHERE question_id ='{question_id}' ORDER BY submission_time"""
+    query = f"""SELECT answer.id,
+       answer.submission_time,
+       question_id,
+       vote_number,
+       message,
+       image,
+       user_id,
+       users.email
+        FROM answer
+        JOIN users ON answer.user_id = users.id
+        WHERE question_id ='{question_id}' ORDER BY answer.submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -99,7 +132,7 @@ def edit_answer(cursor, answer, answer_id):
 def get_answer_by_id(cursor, answer_id):
     query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
@@ -168,7 +201,19 @@ def edit_comment(cursor, edited_comment):
 
 @database_common.connection_handler
 def display_latest_questions(cursor, number_of_questions=5):
-    query = f"""SELECT * FROM question ORDER BY submission_time LIMIT '{number_of_questions}'"""
+    query = f"""SELECT question.id,
+        question.submission_time,
+        view_number,
+        vote_number,
+        title,
+        message,
+        image,
+        user_id,
+        users.email
+        FROM question
+        JOIN users ON question.user_id = users.id
+        ORDER BY submission_time 
+        LIMIT '{number_of_questions}'"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -207,7 +252,17 @@ def delete_tag(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_comments(cursor):
-    query = """SELECT * FROM comment"""
+    query = """SELECT comment.id,
+       comment.submission_time,
+       comment.question_id,
+       comment.answer_id,
+       message,
+       edited_count,
+       user_id,
+       users.email
+        FROM comment
+        JOIN users ON comment.user_id = users.id
+        ORDER BY comment.submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -216,9 +271,9 @@ def get_comments(cursor):
 def add_new_question_comment(cursor, comment):
     query = f"""
         INSERT 
-        INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+        INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
         VALUES('{comment["question_id"]}', NULL, '{comment["message"]}',
-        CURRENT_DATE, '{comment["edited_count"]}')"""
+        CURRENT_DATE, '{comment["edited_count"]}', '{comment["user_id"]}')"""
     cursor.execute(query)
 
 
@@ -236,14 +291,7 @@ def delete_comment(cursor, comment_id):
 def get_comment_by_id(cursor, comment_id):
     query = f"""SELECT * FROM comment WHERE id='{comment_id}'"""
     cursor.execute(query)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def get_answer_by_id(cursor, answer_id):
-    query = f"""SELECT * FROM answer WHERE id='{answer_id}'"""
-    cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
@@ -318,11 +366,21 @@ def count_related_comments(cursor, user_id):
 
 @database_common.connection_handler
 def get_user_info(cursor, email):
-    query = f"""
-        SELECT * FROM users WHERE email='{email}'
-    """
-    cursor.execute(query)
+    cursor.execute("""
+        SELECT * FROM users
+        WHERE email = %(e_l)s""", {'e_l': email})
+
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def registrate_user(cursor, email, password):
+    query = f"""
+        INSERT
+        INTO users (email, password, submission_time, reputation)
+        VALUES ('{email}', '{password}', NOW(), 0)
+        """
+    cursor.execute(query)
 
 
 @database_common.connection_handler
@@ -344,4 +402,3 @@ def get_all_user_data(cursor):
     """
     cursor.execute(query)
     return cursor.fetchall()
-
