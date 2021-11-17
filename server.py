@@ -243,7 +243,9 @@ def login_page_post():
 
 @app.route("/users")
 def users():
-    pass
+    users_data = data_manager.get_all_user_data()
+    print(users_data)
+    return render_template("users.html", users_data=users_data)
 
 
 if __name__ == "__main__":
