@@ -245,6 +245,12 @@ def logout():
     return redirect(url_for('main_page'))
 
 
+@app.route('/bonus')
+def bonus():
+    questions = data_manager.get_bonus_questions()
+    return render_template("bonus_questions.html", questions=questions)
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
