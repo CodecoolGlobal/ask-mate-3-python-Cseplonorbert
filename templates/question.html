@@ -5,28 +5,29 @@
 {% endblock %}
 
 {% block content %}
-    <br>
-    <br>
-    <br>
-    <br>
-
         <table class="table2">
             <tr>
                 <td class="td_title2">{{ question["title"] }}</td>
             </tr>
             <tr>
-                <td class="td_date">Asked: {{ question["submission_time"] }} Added by: {{ question['email'] }}</td>
+                <td class="td_date">Asked: {{ question["submission_time"] }}</td>
                 <td class="td_view">Viewed: {{ question["view_number"] }} times</td>
             </tr>
             <tr>
                 <br>
+                <td>Added by: {{ question['email'] }}</td>
             </tr>
         </table>
     <br>
 
     <table class="table3">
         <tr>
-            <td>{{ question["message"] }}</td>
+            <td class="td-center">
+                <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img src="{{ url_for('static', filename='images/upp_arrow.png') }}" alt="Vote up" style="width: 50px"></a><br>
+                {{ question['vote_number'] }}<br>
+                <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img src="{{ url_for('static', filename='images/down_arrow.png') }}" alt="Vote down" style="width: 50px"></a>
+            </td>
+            <td class="td_question_message">{{ question["message"] }}</td>
         </tr>
         {% if question["image"] %}
             <tr>
@@ -38,22 +39,6 @@
     <br>
     <table class="table4">
         <tr>
-            <td>
-                <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
-                    <button type="submit"> vote down </button>
-                </form>
-            </td>
-            <td class="td-center">
-                Votes: {{ question['vote_number'] }}
-            </td>
-            <td class="td-right">
-                <form action='{{ url_for("question_vote_up", question_id=question["id"]) }}' method = 'GET' >
-                    <button type="submit"> vote up </button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add new comment</a></td>
             <td class="td-center"><a href="{{ url_for('edit_question', question_id=question['id']) }}">Edit question</a></td>
             <td class="td-right"><a href="{{ url_for('delete_question', question_id=question['id']) }}">DELETE THIS QUESTION</a></td>
         </tr>
@@ -77,6 +62,9 @@
                     </tr>
                 {% endif %}
         {% endfor %}
+        <tr>
+            <td><a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add new comment</a></td>
+        </tr>
     </table>
     <table class="table3">
     <tr>
