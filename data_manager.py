@@ -328,7 +328,8 @@ def get_user_info(cursor, email):
 @database_common.connection_handler
 def get_all_user_data(cursor):
     query = """
-    SELECT 
+    SELECT
+    users.id as user_id, 
     users.email AS username,
     users.submission_time AS registration_date,
     COUNT(DISTINCT question.message) AS number_of_asked_questions,
@@ -339,7 +340,7 @@ def get_all_user_data(cursor):
     LEFT JOIN question ON users.id = question.user_id
     RIGHT JOIN comment ON comment.user_id = users.id
     RIGHT JOIN answer ON users.id = answer.user_id
-    GROUP BY users.email,users.submission_time,users.reputation
+    GROUP BY users.email,users.submission_time,users.reputation,users.id
     """
     cursor.execute(query)
     return cursor.fetchall()
