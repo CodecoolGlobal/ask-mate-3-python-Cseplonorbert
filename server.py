@@ -324,6 +324,39 @@ def registrate():
         return render_template('registration.html')
 
 
+@app.route("/users")
+def users():
+    if 'email' in session:
+        users_data = data_manager.get_all_user_data()
+        return render_template("users.html", users_data=users_data)
+    return redirect(url_for('main_page'))
+
+
+@app.route("/answer/<answer_id>/accept_answer")
+def accept_answer(answer_id):
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        question_id = answer['question_id']
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if session['user_id'] != answer['user_id']:
+                data_manager.increase_reputation_for_acceptance(answer['user_id'])
+                data_manager.accept_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route("/answer/<answer_id>/remove_accept")
+def remove_accept(answer_id):
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        question_id = answer['question_id']
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if session['user_id'] != answer['user_id']:
+                data_manager.remove_accept(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',

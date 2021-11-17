@@ -408,3 +408,54 @@ def decrease_reputation(cursor, user_id):
             WHERE users.id = {user_id}
     """
     cursor.execute(query)
+  
+ 
+@database_common.connection_handler    
+def get_all_user_data(cursor):
+    query = """
+    SELECT
+    users.id as user_id, 
+    users.email AS username,
+    users.submission_time AS registration_date,
+    COUNT(DISTINCT question.message) AS number_of_asked_questions,
+    COUNT(DISTINCT comment.message) AS number_of_comments,
+    COUNT(DISTINCT answer.message) AS number_of_answers,
+    users.reputation
+    FROM users 
+    LEFT JOIN question ON users.id = question.user_id
+    RIGHT JOIN comment ON comment.user_id = users.id
+    RIGHT JOIN answer ON users.id = answer.user_id
+    GROUP BY users.email,users.submission_time,users.reputation,users.id
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def accept_answer(cursor, answer_id):
+    query = f"""
+       UPDATE answer
+       SET accepted = true
+       WHERE id = '{answer_id}'
+       """
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def remove_accept(cursor, answer_id):
+    query = f"""
+       UPDATE answer
+       SET accepted = false
+       WHERE id = '{answer_id}'
+           """
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def increase_reputation_for_acceptance(cursor, user_id):
+    query = f"""
+        UPDATE users 
+        SET reputation = reputation+15
+        WHERE id = '{user_id}' 
+              """
+    cursor.execute(query)
