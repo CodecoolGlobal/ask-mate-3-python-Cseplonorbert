@@ -384,50 +384,27 @@ def registrate_user(cursor, email, password):
 
 
 @database_common.connection_handler
-def increase_reputation(cursor, table, row_id):
+def increase_reputation(cursor, table, user_id):
     if table == "question":
         query = f"""
                 UPDATE users 
                 SET reputation = reputation + 5
-                WHERE {table}.user_id =
-                (SELECT user_id
-                FROM {table}
-                WHERE id = {row_id}
-                )
+                WHERE users.id = {user_id}
         """
     elif table == "answer":
         query = f"""
                 UPDATE users
                 SET reputation = reputation + 10
-                WHERE {table}.user_id =
-                (SELECT user_id
-                FROM {table}
-                WHERE id = {row_id}
-                )
+                WHERE users.id = {user_id}
         """
     cursor.execute(query)
 
 
 @database_common.connection_handler
-def decrease_reputation(cursor, table, row_id):
-    if table == "question":
-        query = f"""
-                UPDATE users 
-                SET reputation = reputation - 2
-                WHERE {table}.user_id  =
-                (SELECT user_id
-                FROM {table}
-                WHERE id = {row_id}
-                )
-        """
-    elif table == "answer":
-        query = f"""
-                UPDATE users
-                SET reputation = reputation - 2
-                WHERE {table}.user_id =
-                (SELECT user_id
-                FROM {table}
-                WHERE id = {row_id}
-                )
-        """
+def decrease_reputation(cursor, user_id):
+    query = f"""
+            UPDATE users 
+            SET reputation = reputation - 2
+            WHERE users.id = {user_id}
+    """
     cursor.execute(query)
