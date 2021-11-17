@@ -16,6 +16,18 @@ ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_ques
 ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_tag_id CASCADE;
 
+
+DROP TABLE IF EXISTS public.bonus_questions;
+CREATE TABLE bonus_question (
+    id serial NOT NULL,
+    title text,
+    view_number integer,
+    vote_number integer,
+    description text
+);
+
+
+
 DROP TABLE IF EXISTS public.question;
 CREATE TABLE question (
     id serial NOT NULL,
@@ -119,7 +131,11 @@ app.js (bundled file with webpack, including jquery)', 'images/image1.png');
 INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL);
 SELECT pg_catalog.setval('question_id_seq', 2, true);
-
+INSERT INTO bonus_question VALUES(1, 'test', 1, 1, 'test')
+INSERT INTO bonus_question VALUES(2, 'test', 1, 1, 'test')
+INSERT INTO bonus_question VALUES(3, 'test', 1, 1, 'test')
+INSERT INTO bonus_question VALUES(4, 'test', 1, 1, 'test')
+INSERT INTO bonus_question VALUES(5, 'test', 1, 1, 'test')
 INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
 INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
 SELECT pg_catalog.setval('answer_id_seq', 2, true);
