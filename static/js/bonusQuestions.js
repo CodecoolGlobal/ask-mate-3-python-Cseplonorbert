@@ -91,11 +91,6 @@ function myFunctionHide() {
   }
 }
 
-function darkTheme() {
-   var element = document.body;
-   element.classList.toggle("dark-mode");
-   }
-
 function sortQuestions () {
     document.addEventListener('DOMContentLoaded', function () {
                 const table = document.getElementById('sortMe');
