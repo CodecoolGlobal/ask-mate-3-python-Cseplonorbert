@@ -171,20 +171,26 @@ function sortQuestions () {
 
 }
 
-function increaseDecrease(){
+function decrease(){
     let elements = document.getElementsByClassName('row');
     for(let i = 0; i < elements.length; i++){
         let element = elements[i];
-        element.style.fontSize = "20px";
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let currentSize = parseInt(style);
+        currentSize--;
+        element.style.fontSize = currentSize.toString();
     }
 
 }
 
-function increaseDecreaseTwo(){
+function increase(){
     let elements = document.getElementsByClassName('row');
     for(let i = 0; i < elements.length; i++){
         let element = elements[i];
-        element.style.fontSize = "17px";
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let currentSize = parseInt(style);
+        currentSize++;
+        element.style.fontSize = currentSize.toString();
     }
 
 }
