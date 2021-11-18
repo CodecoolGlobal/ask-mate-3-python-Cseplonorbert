@@ -1,3 +1,6 @@
+const list = document.querySelector('#book-list ul');
+const forms = document.forms;
+
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
@@ -50,3 +53,173 @@ function increaseFont() {
 function decreaseFont() {
     console.log("decreaseFont")
 }
+
+function increase(){
+    document.getElementByClass("question-td").style.fontSize = "x-large";
+}
+
+function increaseQuestionFont(){
+
+    document.getElementsByClass("question-td").addEventListener("click", increase);
+}
+
+function filter(){
+const list = document.querySelector('#book-list ul');
+const forms = document.forms;
+
+const searchBar = forms['search-questions'].querySelector('input');
+searchBar.addEventListener('keyup', (e) => {
+  const term = e.target.value.toLowerCase();
+  const questions = list.getElementsByTagName('td');
+  Array.from(questions).forEach((book) => {
+    const title = question.firstElementChild.textContent;
+    if(title.toLowerCase().indexOf(e.target.value) != -1){
+      question.style.display = 'block';
+    } else {
+      question.style.display = 'none';
+    }
+  });
+});
+}
+
+function myFunctionHide() {
+  let hide = document.getElementById("myDIV");
+  if (hide.style.display === "none") {
+    hide.style.display = "block";
+  } else {
+    hide.style.display = "none";
+  }
+}
+
+function darkTheme() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+   }
+
+function sortQuestions () {
+    document.addEventListener('DOMContentLoaded', function () {
+                const table = document.getElementById('sortMe');
+                const headers = table.querySelectorAll('th');
+                const tableBody = table.querySelector('tbody');
+                const rows = tableBody.querySelectorAll('tr');
+
+                // Track sort directions
+                const directions = Array.from(headers).map(function (header) {
+                    return '';
+                });
+
+                // Transform the content of given cell in given column
+                const transform = function (index, content) {
+                    // Get the data type of column
+                    const type = headers[index].getAttribute('data-type');
+                    switch (type) {
+                        case 'number':
+                            return parseFloat(content);
+                        case 'string':
+                        default:
+                            return content;
+                    }
+                };
+
+                const sortColumn = function (index) {
+                    // Get the current direction
+                    const direction = directions[index] || 'asc';
+
+                    // A factor based on the direction
+                    const multiplier = direction === 'asc' ? 1 : -1;
+
+                    const newRows = Array.from(rows);
+
+                    newRows.sort(function (rowA, rowB) {
+                        const cellA = rowA.querySelectorAll('td')[index].innerHTML;
+                        const cellB = rowB.querySelectorAll('td')[index].innerHTML;
+
+                        const a = transform(index, cellA);
+                        const b = transform(index, cellB);
+
+                        switch (true) {
+                            case a > b:
+                                return 1 * multiplier;
+                            case a < b:
+                                return -1 * multiplier;
+                            case a === b:
+                                return 0;
+                        }
+                    });
+
+                    // Remove old rows
+                    [].forEach.call(rows, function (row) {
+                        tableBody.removeChild(row);
+                    });
+
+                    // Reverse the direction
+                    directions[index] = direction === 'asc' ? 'desc' : 'asc';
+
+                    // Append new row
+                    newRows.forEach(function (newRow) {
+                        tableBody.appendChild(newRow);
+                    });
+                };
+
+                [].forEach.call(headers, function (header, index) {
+                    header.addEventListener('click', function () {
+                        sortColumn(index);
+                    });
+                });
+            });
+
+
+}
+
+function decrease(){
+    let elements = document.getElementsByClassName('row');
+    for(let i = 0; i < elements.length; i++){
+        let element = elements[i];
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let currentSize = parseInt(style);
+        currentSize--;
+        element.style.fontSize = currentSize.toString() + 'px';
+    }
+
+}
+
+function increase(){
+    let elements = document.getElementsByClassName('row');
+    for(let element of elements){
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let currentSize = parseInt(style);
+        currentSize++;
+        element.style.fontSize = currentSize.toString() + 'px';
+    }
+
+}
+
+
+
+function myFunction() {
+  // Declare variables
+  let input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("sortMe");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+
+sortQuestions();
+myFunction();
+document.getElementById("increase").addEventListener("click", increase);
+document.getElementById("decrease").addEventListener("click", decrease);

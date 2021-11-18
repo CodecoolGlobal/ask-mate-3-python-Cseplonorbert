@@ -1,38 +1,42 @@
-<html>
+{% extends 'layout.html' %}
     <head>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
+
     </head>
-    <body>
-        <h1>AskMate</h1>
-        <h2>All Questions:</h2>
-        <button id="theme-button">Change Theme to Dark</button>
-        <button id="increase-font-button">Increase page font</button>
-        <button id="decrease-font-button">Decrease page font</button>
-        <input
-                data-table-body="doNotModifyThisId_QuestionsTableBody"
-                style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
-                type="text"
-                placeholder="filter questions by keywords">
-        <table>
-            <thead id="doNotModifyThisId_QuestionsTableHeader">
-                <tr>
-                    <td>Title</td>
-                    <td>Description</td>
-                    <td>Vote Count</td>
-                    <td>View Number</td>
-                </tr>
-            </thead>
-            <tbody id="doNotModifyThisId_QuestionsTableBody">
-                {% for question in questions %}
+    {% block content %}
+        <h1>AskMate</h1><br>
+        <h2>All Questions:</h2><br>
+        <button onclick="darkTheme()">Change Theme to Dark</button>
+        <input id="decrease" type="button" value="Decrease Font Size 1px">
+        <input id="increase" type="button" value="Increase Font Size 1px" >
+        <button onclick="myFunctionHide()">Hide Questions</button><br>
+        <input style="width: 500px" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search in description..."><br>
+
+
+         <div id="myDIV">
+
+            <table id="sortMe" class="table">
+                <thead id="doNotModifyThisId_QuestionsTableHeader">
+
                     <tr>
-                        <td>{{ question['title'] }}</td>
-                        <td>{{ question['description'] }}</td>
-                        <td>{{ question['vote_number'] }}</td>
-                        <td>{{ question['view_number'] }}</td>
+
+                        <th><button class="table__header">Title</button></th>
+                        <th><button class="table__header">Description</button></th>
+                        <th data-type="number"><button class="table__header">Vote Count</button></th>
+                        <th data-type="number"><button class="table__header">View Number</button></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </body>
-</html>
+                </thead>
+                <tbody id="doNotModifyThisId_QuestionsTableBody">
+
+                        {% for question in questions %}
+                                <tr class="header">
+                                    <td class="row">{{ question['title'] }}</td>
+                                    <td class="row">{{ question['description'] }}</td>
+                                    <td class="row">{{ question['vote_number'] }}</td>
+                                    <td class="row">{{ question['view_number'] }}</td>
+                                </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+
+    {% endblock %}

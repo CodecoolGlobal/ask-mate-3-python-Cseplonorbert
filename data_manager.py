@@ -8,6 +8,13 @@ import database_common
 
 
 @database_common.connection_handler
+def get_bonus_questions(cursor):
+    query = f"""SELECT * FROM bonus_question"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def add_question(cursor, question):
     query = f"""
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
