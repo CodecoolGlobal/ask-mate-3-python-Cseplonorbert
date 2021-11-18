@@ -43,6 +43,7 @@ def increase_view(question_id):
 def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.answers_by_question_id(question_id)
+    print(answers)
     comments = data_manager.get_comments()
     return render_template("question.html", question=question, answers=answers, comments=comments)
 
@@ -71,7 +72,7 @@ def add_question():
         return redirect(url_for('main_page'))
 
 
-@app.route("/question/<question_id>/new_answer", methods=["POST"])
+@app.route("/question/<question_id>/new_answer", methods=["GET", "POST"])
 def add_new_answer(question_id):
     if 'email' in session:
         answer = dict()
