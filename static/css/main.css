@@ -2,6 +2,7 @@ body{
     margin:0;
     padding:0;
     font-family: sans-serif;
+    background-color: white;
 }
 nav{
     width: 100%;
@@ -281,4 +282,34 @@ input[type=submit]:hover {
 .answer_link a {
     text-decoration: none;
     color: black;
+}
+
+#sortMe {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+    margin-top: 70px;
+    margin-left: 10%;
+}
+
+#sortMe th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #04AA6D;
+  color: white;
+}
+#sortMe td, #sortMe th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#sortMe tr:nth-child(even){background-color: #f2f2f2;}
+
+#sortMe tr:hover {background-color: #ddd;}
+
+.dark-mode {
+  background-color: black;
+  color: white;
 }
