@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+            {{ user_data['email'] }}
+{% endblock %}
+
+{% block content %}
+    <br>
+    <table id="users">
+        <tr>
+        <th>User ID</th><th>User e-mail</th><th>Reg.date</th><th>No. questions</th>
+            <th>No. answers</th><th>No. comments</th><th>Reputation</th>
+        </tr>
+        <tr>
+            <td>{{ user_data['id'] }}</td>
+            <td>{{ user_data['email'] }}</td>
+            <td>{{ user_data['submission_time'] }}</td>
+            <td>{{ number_of_related_questions['count'] }}</td>
+            <td>{{ number_of_related_answers['count'] }}</td>
+            <td>{{ number_of_related_comments['count'] }}</td>
+            <td>{{ user_data['reputation'] }}</td>
+        </tr>
+    </table>
+
+    <table id="users">
+        <tr>
+            <th>Question</th><th>Submission time</th><th>View number</th><th>Vote number</th>
+        </tr>
+        {% for question in related_questions %}
+        <tr>
+            <td><a href="{{ url_for('increase_view', question_id=question["id"]) }}">{{ question['title'] }}</a></td>
+            <td>{{ question['submission_time'] }}</td>
+            <td>{{ question['view_number'] }}</td>
+            <td>{{ question['vote_number'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <table id="users">
+        <tr>
+             <th>Answer</th><th>Submission time</th><th>Vote number</th>
+             <th>Accepted</th>
+        </tr>
+        {% for answer in related_answers %}
+        <tr>
+            <td class="answer_link"><a href="{{ url_for('increase_view', question_id=answer['question_id']) }}">{{ answer['message'] }}</a></td>
+            <td>{{ answer['submission_time'] }}</td>
+            <td>{{ answer['vote_number'] }}</td>
+            <td>
+                {% if answer['accepted'] %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <table id="users">
+        <tr>
+            <th>Comment</th><th>Submission time</th><th>Edited(times)</th>
+        </tr>
+        {% for comment in related_comments %}
+        <tr>
+            <td>{{ comment['message'] }}</td><td>{{ comment['submission_time'] }}</td>
+            <td>{{ comment['edited_count'] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+{% endblock %}

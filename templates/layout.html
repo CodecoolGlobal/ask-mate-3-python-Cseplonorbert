@@ -9,17 +9,32 @@
 <body>
     <header>
         <nav>
-            <a href="/">AskMate</a>
+            <ul>
+                <li><a href="/">AskMate</a></li>
+                <li><a href="/list">Questions</a></li>
+                <li><form action="/search">
+                    <input name="sequence" id="sequence" placeholder="Search for questions">
+                    <input type="submit" value="Search:">
+                    </form></li>
+                <li><a href="/registration">Sign Up</a></li>
+                <li>{% if 'email' in session %}
+                    <a href="{{ url_for('logout') }}">Log out</a>
+                    {% else %}
+                    <a href="{{ url_for('login_page') }}">Login</a>
+                    {% endif %}</li>
+            </ul>
         </nav>
     </header>
 
-    <div class="login_container">
-        {% if 'email' in session %}
-            <a href="{{ url_for('logout') }}">Log out</a>
-        {% else %}
-            <a href="{{ url_for('login_page') }}">Login</a>
-        {% endif %}
-    </div>
+    {% if 'email' in session %}
+        <div class="show_user_email">
+            <table>
+                <tr>
+                    <td>You logged in as: <a href="{{ url_for('get_user_page', user_id=session['user_id']) }}">{{ session['email'] }}</a></td>
+                </tr>
+            </table>
+        </div>
+    {% endif %}
 
     <section>
         {% block content %}{% endblock %}
