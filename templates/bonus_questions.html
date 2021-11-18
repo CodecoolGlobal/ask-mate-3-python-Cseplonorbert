@@ -2,7 +2,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
         <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
-        
+
     </head>
     <body>
         <h1>AskMate</h1>
@@ -35,14 +35,16 @@
                     </tr>
                 </thead>
                 <tbody id="doNotModifyThisId_QuestionsTableBody">
-                    {% for question in questions %}
-                        <tr>
-                            <td>{{ question['title'] }}</td>
-                            <td>{{ question['description'] }}</td>
-                            <td>{{ question['vote_number'] }}</td>
-                            <td>{{ question['view_number'] }}</td>
-                        </tr>
-                    {% endfor %}
+                        <div id="text" style="font-size: 1em">
+                            {% for question in questions %}
+                                    <tr>
+                                        <td>{{ question['title'] }}</td>
+                                        <td>{{ question['description'] }}</td>
+                                        <td>{{ question['vote_number'] }}</td>
+                                        <td>{{ question['view_number'] }}</td>
+                                    </tr>
+                            {% endfor %}
+                        </div>
                 </tbody>
             </table>
         </div>
