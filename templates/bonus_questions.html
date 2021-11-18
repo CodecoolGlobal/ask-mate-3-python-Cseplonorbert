@@ -23,6 +23,8 @@
             <form id="search-question">
                 <input type="text" placeholder="Search questions..." />
             </form>
+            <input type="button" value="Increase Font Size 1px" onclick="increaseDecrease()">
+            <input type="button" value="Decrease Font Size 1px" onclick="increaseDecreaseTwo()">
             <table id="sortMe" class="table">
                 <thead id="doNotModifyThisId_QuestionsTableHeader">
 
@@ -35,18 +37,16 @@
                     </tr>
                 </thead>
                 <tbody id="doNotModifyThisId_QuestionsTableBody">
-                        <div id="text" style="font-size: 1em">
-                            {% for question in questions %}
-                                    <tr>
-                                        <td>{{ question['title'] }}</td>
-                                        <td>{{ question['description'] }}</td>
-                                        <td>{{ question['vote_number'] }}</td>
-                                        <td>{{ question['view_number'] }}</td>
-                                    </tr>
-                            {% endfor %}
-                        </div>
+                        {% for question in questions %}
+                                <tr>
+                                    <td class="row">{{ question['title'] }}</td>
+                                    <td class="row">{{ question['description'] }}</td>
+                                    <td class="row">{{ question['vote_number'] }}</td>
+                                    <td class="row">{{ question['view_number'] }}</td>
+                                </tr>
+                        {% endfor %}
                 </tbody>
             </table>
-        </div>
+
     </body>
 </html>

@@ -171,4 +171,24 @@ function sortQuestions () {
 
 }
 
-sortQuestions ()
+function increaseDecrease(){
+    let elements = document.getElementsByClassName('row');
+    for(let i = 0; i < elements.length; i++){
+        let element = elements[i];
+        element.style.fontSize = "20px";
+    }
+
+}
+
+function increaseDecreaseTwo(){
+    let elements = document.getElementsByClassName('row');
+    for(let i = 0; i < elements.length; i++){
+        let element = elements[i];
+        element.style.fontSize = "17px";
+    }
+
+}
+
+
+
+sortQuestions ();
