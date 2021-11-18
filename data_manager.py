@@ -360,7 +360,7 @@ def count_related_comments(cursor, user_id):
                     SELECT COUNT(user_id) FROM comment
                     WHERE user_id = %(u_i)s""",
                    {'u_i': int(user_id)})
-    number_of_related_comments = cursor.fetchall()
+    number_of_related_comments = cursor.fetchone()
     return number_of_related_comments
 
 
