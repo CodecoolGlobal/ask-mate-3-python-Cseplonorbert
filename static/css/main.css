@@ -150,7 +150,7 @@ input[type=submit]:hover {
     margin-left: 20px;
 }
 .td-tab{
-    width:30%;
+    width:20%;
 }
 .td-comment{
     border-bottom: 1px solid grey;
@@ -158,9 +158,15 @@ input[type=submit]:hover {
     color: #A0A0A0;
 }
 .td-comment_date{
+    border-bottom: 1px;
     font-size: 0.8em;
     color: #A0A0A0;
 }
+.td_answer_data{
+    color: #A0A0A0;
+    font-size: 0.8em;
+}
+
 .td-right-bottom-border{
     text-align: right;
     border-bottom: 1px solid grey;
@@ -219,4 +225,33 @@ input[type=submit]:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.add_answer {
+    width: 50%;
+    margin-left: 25%;
+}
+.add_answer form {
+    margin: auto;
+}
+.add_answer input[type=submit] {
+    background-color: #4CAF50;
+    width: 100%;
+    color: white;
+    padding: 15px 15px;
+    border: none;
+    margin: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.add_answer input[type=submit]:hover {
+    background-color: #45a049;
+}
+.add_answer textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
