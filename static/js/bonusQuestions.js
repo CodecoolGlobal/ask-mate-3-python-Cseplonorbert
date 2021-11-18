@@ -213,7 +213,6 @@ function myFunction() {
   }
 }
 
-darkTheme()
 sortQuestions();
 myFunction();
 document.getElementById("increase").addEventListener("click", increase);
