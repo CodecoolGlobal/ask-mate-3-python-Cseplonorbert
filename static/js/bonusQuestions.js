@@ -98,14 +98,12 @@ function sortQuestions () {
                 const tableBody = table.querySelector('tbody');
                 const rows = tableBody.querySelectorAll('tr');
 
-                // Track sort directions
                 const directions = Array.from(headers).map(function (header) {
                     return '';
                 });
 
-                // Transform the content of given cell in given column
                 const transform = function (index, content) {
-                    // Get the data type of column
+
                     const type = headers[index].getAttribute('data-type');
                     switch (type) {
                         case 'number':
@@ -117,10 +115,9 @@ function sortQuestions () {
                 };
 
                 const sortColumn = function (index) {
-                    // Get the current direction
+
                     const direction = directions[index] || 'asc';
 
-                    // A factor based on the direction
                     const multiplier = direction === 'asc' ? 1 : -1;
 
                     const newRows = Array.from(rows);
@@ -142,15 +139,12 @@ function sortQuestions () {
                         }
                     });
 
-                    // Remove old rows
                     [].forEach.call(rows, function (row) {
                         tableBody.removeChild(row);
                     });
 
-                    // Reverse the direction
                     directions[index] = direction === 'asc' ? 'desc' : 'asc';
 
-                    // Append new row
                     newRows.forEach(function (newRow) {
                         tableBody.appendChild(newRow);
                     });
@@ -192,14 +186,13 @@ function increase(){
 
 
 function myFunction() {
-  // Declare variables
+
   let input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
   table = document.getElementById("sortMe");
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
     if (td) {
