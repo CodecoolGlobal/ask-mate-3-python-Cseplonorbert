@@ -1,3 +1,6 @@
+const list = document.querySelector('#book-list ul');
+const forms = document.forms;
+
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
@@ -50,3 +53,46 @@ function increaseFont() {
 function decreaseFont() {
     console.log("decreaseFont")
 }
+
+function increase(){
+    document.getElementByClass("question-td").style.fontSize = "x-large";
+}
+
+function increaseQuestionFont(){
+
+    document.getElementsByClass("question-td").addEventListener("click", increase);
+}
+
+function filter(){
+const list = document.querySelector('#book-list ul');
+const forms = document.forms;
+
+const searchBar = forms['search-questions'].querySelector('input');
+searchBar.addEventListener('keyup', (e) => {
+  const term = e.target.value.toLowerCase();
+  const questions = list.getElementsByTagName('td');
+  Array.from(questions).forEach((book) => {
+    const title = question.firstElementChild.textContent;
+    if(title.toLowerCase().indexOf(e.target.value) != -1){
+      question.style.display = 'block';
+    } else {
+      question.style.display = 'none';
+    }
+  });
+});
+}
+
+function myFunction() {
+  let hide = document.getElementById("myDIV");
+  if (hide.style.display === "none") {
+    hide.style.display = "block";
+  } else {
+    hide.style.display = "none";
+  }
+}
+
+function darkTheme() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+   }
+
