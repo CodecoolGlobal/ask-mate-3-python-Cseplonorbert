@@ -154,6 +154,12 @@ input[type=submit]:hover {
 }
 .td-comment{
     border-bottom: 1px solid grey;
+    font-size: 0.8em;
+    color: #A0A0A0;
+}
+.td-comment_date{
+    font-size: 0.8em;
+    color: #A0A0A0;
 }
 .td-right-bottom-border{
     text-align: right;
