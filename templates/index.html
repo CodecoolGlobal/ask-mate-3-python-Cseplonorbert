@@ -7,17 +7,21 @@
 
 {% block content %}
 
-    <form action="/add_question">
-        <button type="submit" class="button1">Add new question</button>
-    </form>
+    {% if 'email' in session %}
+        <div class="add_new_question">
+        <form action="/add_question">
+            <input type="submit" value="Add new question">
+        </form>
+        </div>
+    {% endif %}
 
-    <form action="/search" class="form1">
-        <label for="sequence">Search in questions</label><br>
-        <textarea name="sequence" id="sequence" cols="30" rows="1"></textarea><br>
-        <button type="submit">Search:</button>
-    </form>
-
-    <a href="/list" class="list">List all questions</a>
+    {% if 'email' in session %}
+        <div class="get_users">
+        <form action="/users">
+            <input type="submit" value="Get all users">
+        </form>
+        </div>
+    {% endif %}
 
     <div class="sort">
         <form action="/list" method="get" enctype="text/plain">
@@ -40,6 +44,7 @@
     <br>
     <br>
     <br>
+    <br>
     {% if questions %}
     {% for question in questions %}
         <table class="table1">
@@ -49,9 +54,14 @@
                 <td class="td_title"><a href="{{ url_for("increase_view", question_id=question["id"]) }}">{{ question["title"] }}</a></td>
             </tr>
             <tr>
-                <td class="td_number">Views</td>
-                <td class="td_number">Votes</td>
-                <td class="td_date">Date: {{ question["submission_time"] }}</td>
+                <td class="td_number"><img src="{{ url_for('static', filename='images/views.png') }}" alt="Views" style="width: 30px"></td>
+                <td class="td_number"><img src="{{ url_for('static', filename='images/like_button.jpg') }}" alt="Votes" style="width: 30px"></td>
+                <td class="td_date"><img src="{{ url_for('static', filename='images/calendar_icon.png') }}" alt="Date" style="width: 20px"> {{ question["submission_time"] }}</td>
+            </tr>
+            <tr>
+                <td class="td_number"></td>
+                <td class="td_number"></td>
+                <td class="td_date">Asked by: {{ question['email'] }}</td>
             </tr>
 
         </table>

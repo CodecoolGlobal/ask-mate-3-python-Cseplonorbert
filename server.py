@@ -44,154 +44,221 @@ def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.answers_by_question_id(question_id)
     comments = data_manager.get_comments()
-    return render_template("question.html", question=question[0], answers=answers, comments=comments)
+    return render_template("question.html", question=question, answers=answers, comments=comments)
 
 
 @app.route("/add_question", methods=["GET", "POST"])
 def add_question():
-    if request.method == "POST":
-        question = dict()
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
+    if 'email' in session:
+        if request.method == "POST":
+            question = dict()
+            if request.files:
+                image = request.files["image"]
+                if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                    filename = secure_filename(image.filename)
 
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                question["image"] = f"images/{image.filename}"
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    question["image"] = f"images/{image.filename}"
 
-        question['title'] = request.form['title']
-        question['message'] = request.form['message']
-        data_manager.add_question(question)
-        return redirect('/list')
-    elif request.method == "GET":
-        return render_template("add_question.html")
+            question['title'] = request.form['title']
+            question['message'] = request.form['message']
+            question['user_id'] = session['user_id']
+            data_manager.add_question(question)
+            return redirect('/list')
+        elif request.method == "GET":
+            return render_template("add_question.html")
+    else:
+        return redirect(url_for('main_page'))
 
 
 @app.route("/question/<question_id>/new_answer", methods=["POST"])
 def add_new_answer(question_id):
-    answer = dict()
-    if request.method == "POST":
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                answer["image"] = f"images/{image.filename}"
-        answer["message"] = request.form["message"]
-        answer["question_id"] = question_id
-        data_manager.add_new_answer(answer)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = dict()
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+                if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    answer["image"] = f"images/{image.filename}"
+            answer["message"] = request.form["message"]
+            answer["question_id"] = question_id
+            answer["user_id"] = session["user_id"]
+            data_manager.add_new_answer(answer)
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
-    if request.method == 'GET':
-        data_manager.delete_question_id(question_id)
-        return redirect('/list')
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            data_manager.delete_question_id(question_id)
+            return redirect(url_for('main_page'))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = data_manager.get_question_by_id(question_id)[0]
-    if request.method == "POST":
-        question['title'] = request.form['title']
-        question['message'] = request.form['message']
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                question["image"] = f"images/{image.filename}"
-        data_manager.edit_question(question, question_id)
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if request.method == "POST":
+                question['title'] = request.form['title']
+                question['message'] = request.form['message']
+                if request.files:
+                    image = request.files["image"]
+                    if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                        filename = secure_filename(image.filename)
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                        question["image"] = f"images/{image.filename}"
+                data_manager.edit_question(question, question_id)
 
-        return redirect(f"/question/{question_id}")
-    return render_template("edit_question.html", question=question)
+                return redirect(url_for('display_question', question_id=question_id))
+            return render_template("edit_question.html", question=question)
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/delete", methods=["GET"])
 def delete_answer(answer_id, question_id):
-    data_manager.delete_answer(answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] == session['user_id']:
+            data_manager.delete_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_question_comment(question_id):
-    if request.method == "POST":
-        question_comment = dict()
-        question_comment["message"] = request.form['comment']
-        question_comment["edited_count"] = 0
-        question_comment["question_id"] = question_id
-        data_manager.add_new_question_comment(question_comment)
+    if 'email' in session:
+        if request.method == "POST":
+            question_comment = dict()
+            question_comment["message"] = request.form['comment']
+            question_comment["edited_count"] = 0
+            question_comment["question_id"] = question_id
+            question_comment["user_id"] = session['user_id']
+            data_manager.add_new_question_comment(question_comment)
+            return redirect(url_for('display_question', question_id=question_id))
+        return render_template("add_question_comment.html", question_id=question_id)
+    else:
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template("add_question_comment.html", question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/<question_id>/new-comment", methods=["GET", "POST"])
 def add_answer_comment(answer_id, question_id):
-    if request.method == "POST":
-        answer_comment = dict()
-        answer_comment["message"] = request.form["comment"]
-        answer_comment['edited_count'] = 0
-        answer_comment['answer_id'] = answer_id
-        data_manager.add_answer_comment(answer_comment)
-        return redirect(f"/question/{question_id}")
-    return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
+    if 'email' in session:
+        if request.method == "POST":
+            answer_comment = dict()
+            answer_comment["message"] = request.form["comment"]
+            answer_comment['edited_count'] = 0
+            answer_comment['answer_id'] = answer_id
+            answer_comment['user_id'] = session['user_id']
+            data_manager.add_answer_comment(answer_comment)
+            return redirect(url_for('display_question', question_id=question_id))
+        return render_template("add_answer_comment.html", answer_id=answer_id, question_id=question_id)
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
 def question_vote_up(question_id):
-    data_manager.increase_vote_number("question", question_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] != question['user_id']:
+            data_manager.increase_vote_number("question", question_id)
+            data_manager.increase_reputation("question", question['user_id'])
+            return redirect(url_for('display_question', question_id=question_id))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_down", methods=["GET"])
 def question_vote_down(question_id):
-    data_manager.decrease_vote_number("question", question_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] != question['user_id']:
+            data_manager.decrease_vote_number("question", question_id)
+            data_manager.decrease_reputation(question['user_id'])
+            return redirect(url_for('display_question', question_id=question_id))
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_up", methods=["GET"])
 def answer_vote_up(answer_id, question_id):
-    data_manager.increase_vote_number("answer", answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] != session['user_id']:
+            data_manager.increase_vote_number("answer", answer_id)
+            data_manager.increase_reputation("answer", answer['user_id'])
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/vote_down", methods=["GET"])
 def answer_vote_down(answer_id, question_id):
-    data_manager.decrease_vote_number("answer", answer_id)
-    return redirect(f"/question/{question_id}")
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if answer['user_id'] != session['user_id']:
+            data_manager.decrease_vote_number("answer", answer_id)
+            data_manager.decrease_reputation(answer['user_id'])
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/comment/<comment_id>/<question_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id, question_id):
-    comment = data_manager.get_comment_by_id(comment_id)[0]
-    if request.method == "POST":
-        comment["message"] = request.form.get("comment")
-        data_manager.edit_comment(comment)
-        return redirect(url_for("display_question", question_id=question_id))
-    return render_template("edit_comment.html", comment=comment, question_id=question_id)
+    comment = data_manager.get_comment_by_id(comment_id)
+    if 'email' in session:
+        if session['user_id'] == comment['user_id']:
+            if request.method == "POST":
+                comment["message"] = request.form.get("comment")
+                data_manager.edit_comment(comment)
+            else:
+                return render_template("edit_comment.html", comment=comment, question_id=question_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/<question_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id, question_id):
-    answer = data_manager.get_answer_by_id(answer_id)[0]
-    if request.method == "POST":
-        answer['message'] = request.form['message']
-        if request.files:
-            image = request.files["image"]
-            if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                answer["image"] = f"images/{image.filename}"
-        data_manager.edit_answer(answer, answer_id)
-
-        return redirect(f"/question/{question_id}")
-    return render_template("edit_answer.html", answer=answer)
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        if session['user_id'] == answer['user_id']:
+            if request.method == "POST":
+                answer['message'] = request.form['message']
+                if request.files:
+                    image = request.files["image"]
+                    if utils.allowed_image(image.filename, app.config["ALLOWED_IMAGE_EXTENSIONS"]):
+                        filename = secure_filename(image.filename)
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                        answer["image"] = f"images/{image.filename}"
+                data_manager.edit_answer(answer, answer_id)
+                return redirect(url_for('display_question', question_id=question_id))
+            else:
+                return render_template("edit_answer.html", answer=answer)
+        else:
+            return redirect(url_for('display_question', question_id=question_id))
+    else:
+        return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route("/comments/<comment_id>/<question_id>delete")
 def delete_comment(comment_id, question_id):
-    data_manager.delete_comment(comment_id)
+    if 'email' in session:
+        comment = data_manager.get_comment_by_id(comment_id)
+        if comment['user_id'] == session['user_id']:
+            data_manager.delete_comment(comment_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 
@@ -215,29 +282,79 @@ def get_user_page(user_id):
     else:
         return redirect(url_for('main_page'))
 
-@app.route("/login")
+
+@app.route("/login", methods=['GET', 'POST'])
 def login_page():
-    return render_template('login.html')
-
-
-@app.route("/login_page", methods=['GET', 'POST'])
-def login_page_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    user_info = data_manager.get_user_info(email)
-    if not user_info:
-        flash("Invalid username or password ")
-        return redirect(url_for('login_page'))
+    if request.method == "POST":
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user_info = data_manager.get_user_info(email)
+        if not user_info:
+            flash("Invalid username or password ")
+            return redirect(url_for('login_page'))
+        else:
+            verified_password = utils.verify_password(password, user_info[0]['password'])
+            if not verified_password:
+                flash("Invalid username/password combination")
+                return redirect(url_for('login_page'))
+            else:
+                session['user_id'] = user_info[0]['id']
+                session['email'] = user_info[0]['email']
+                return redirect(url_for('main_page'))
     else:
-        verified_password = utils.verify_password(user_info[0]['password'], password)
+        return render_template('login.html')
 
-    if not verified_password:
-        flash("Invalid username/password combination")
-        return redirect(url_for('login_page'))
-    else:
-        session['id'] = user_info[0]['id']
-        session['username'] = user_info[0]['username']
-        return redirect(url_for('main_page'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id')
+    session.pop('email', None)
+    return redirect(url_for('main_page'))
+
+
+@app.route("/registration", methods=['GET', 'POST'])
+def registrate():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_hashed = utils.hash_password(password)
+        data_manager.registrate_user(email, password_hashed)
+        return redirect("/")
+    elif request.method == 'GET':
+        return render_template('registration.html')
+
+
+@app.route("/users")
+def users():
+    if 'email' in session:
+        users_data = data_manager.get_all_user_data()
+        return render_template("users.html", users_data=users_data)
+    return redirect(url_for('main_page'))
+
+
+@app.route("/answer/<answer_id>/accept_answer")
+def accept_answer(answer_id):
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        question_id = answer['question_id']
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if session['user_id'] != answer['user_id']:
+                data_manager.increase_reputation_for_acceptance(answer['user_id'])
+                data_manager.accept_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route("/answer/<answer_id>/remove_accept")
+def remove_accept(answer_id):
+    if 'email' in session:
+        answer = data_manager.get_answer_by_id(answer_id)
+        question_id = answer['question_id']
+        question = data_manager.get_question_by_id(question_id)
+        if session['user_id'] == question['user_id']:
+            if session['user_id'] != answer['user_id']:
+                data_manager.remove_accept(answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 if __name__ == "__main__":

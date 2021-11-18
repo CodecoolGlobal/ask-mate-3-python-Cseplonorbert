@@ -1,17 +1,23 @@
 {% extends 'layout.html' %}
 {% block title %}
-    Login Page
+    Registration Page
 {% endblock %}
 {% block content %}
+
     <div class="container">
-    <form action="{{ url_for('login_page') }}" method="post">
+    <form action="/registration" method="post">
+
+        <h1>Register</h1>
+        <p>Fill out this form to register!</p>
+
         <label for="email">Email:</label>
         <input type="text" name="email" id="email" required placeholder="Enter email">
+
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required placeholder="Password">
-        <input type="checkbox" onclick="show_password()">Show Password
-        <p>If you don't have an account, click <a href="/registration">here</a></p>
-        <input type="submit" value="LOG IN">
+         <input type="checkbox" onclick="show_password()">Show Password
+        <input type="submit" value="Sign Up">
+
     </form>
     </div>
 
@@ -25,5 +31,4 @@
             }
         }
     </script>
-
 {% endblock %}
