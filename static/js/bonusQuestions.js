@@ -178,19 +178,18 @@ function decrease(){
         let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
         let currentSize = parseInt(style);
         currentSize--;
-        element.style.fontSize = currentSize.toString();
+        element.style.fontSize = currentSize.toString() + 'px';
     }
 
 }
 
 function increase(){
     let elements = document.getElementsByClassName('row');
-    for(let i = 0; i < elements.length; i++){
-        let element = elements[i];
+    for(let element of elements){
         let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
         let currentSize = parseInt(style);
         currentSize++;
-        element.style.fontSize = currentSize.toString();
+        element.style.fontSize = currentSize.toString() + 'px';
     }
 
 }
@@ -222,3 +221,5 @@ function myFunction() {
 
 sortQuestions();
 myFunction();
+document.getElementById("increase").addEventListener("click", increase);
+document.getElementById("decrease").addEventListener("click", decrease);
