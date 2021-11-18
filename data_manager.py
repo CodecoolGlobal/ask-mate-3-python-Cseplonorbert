@@ -423,8 +423,8 @@ def get_all_user_data(cursor):
     users.reputation
     FROM users 
     LEFT JOIN question ON users.id = question.user_id
-    RIGHT JOIN comment ON comment.user_id = users.id
-    RIGHT JOIN answer ON users.id = answer.user_id
+    LEFT JOIN comment ON comment.user_id = users.id
+    LEFT JOIN answer ON users.id = answer.user_id
     GROUP BY users.email,users.submission_time,users.reputation,users.id
     """
     cursor.execute(query)
