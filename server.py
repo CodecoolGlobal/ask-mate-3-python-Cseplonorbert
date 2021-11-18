@@ -1,13 +1,35 @@
-from flask import Flask, session, render_template, request, redirect, url_for,flash
+from flask import Flask, session, render_template, request, redirect, url_for, flash
+from flask_mail import Mail, Message
 import utils
 from werkzeug.utils import secure_filename
 import os
 import data_manager
 
+
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = f"{os.getcwd()}/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPG", "PNG"]
 app.secret_key = '12345abc'
+
+app.config['DEBUG'] = True
+app.config['TESTING'] = False
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'askmate.askmate@gmail.com'
+app.config['MAIL_PASSWORD'] = 'rfsxozkqofooyxom'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+#app.config['MAIL_DEBUG'] = True
+app.config['MAIL_DEFAULT_SENDER'] = 'askmate.askmate@gmail.com'
+
+mail = Mail(app)
+
+
+@app.route("/registration_email/<email_address>")
+def send_email(email_address):
+    msg = Message(subject='AskMate Registration', sender='askmate@askmate.com', recipients=[email_address], body='Welcome and thank you for your registration on AskMate!')
+    mail.send(msg)
+    return redirect("/")
 
 
 @app.route("/", methods=["GET"])
@@ -326,7 +348,7 @@ def registrate():
         password = request.form.get('password')
         password_hashed = utils.hash_password(password)
         data_manager.registrate_user(email, password_hashed)
-        return redirect("/")
+        return redirect(url_for('send_email', email_address=email))
     elif request.method == 'GET':
         return render_template('registration.html')
 
