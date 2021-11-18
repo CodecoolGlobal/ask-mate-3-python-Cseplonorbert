@@ -8,23 +8,14 @@
         <h1>AskMate</h1>
         <h2>All Questions:</h2>
         <button onclick="darkTheme()">Change Theme to Dark</button>
-        <button id="increase-font-button">Increase page font</button>
-        <button id="decrease-font-button">Decrease page font</button>
-        <button onclick="myFunction()">Hide Questions</button>
-
+        <input type="button" value="Decrease Font Size 1px" onclick="decrease()">
+        <input type="button" value="Increase Font Size 1px" onclick="increase()">
+        <button onclick="myFunctionHide()">Hide Questions</button><br>
+        <input style="width: 500px" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search in description..."><br>
 
 
          <div id="myDIV">
-            <input
-                    data-table-body="doNotModifyThisId_QuestionsTableBody"
-                    style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
-                    type="text"
-                    placeholder="filter questions by keywords">
-            <form id="search-question">
-                <input type="text" placeholder="Search questions..." />
-            </form>
-            <input type="button" value="Decrease Font Size 1px" onclick="decrease()">
-            <input type="button" value="Increase Font Size 1px" onclick="increase()">
+
             <table id="sortMe" class="table">
                 <thead id="doNotModifyThisId_QuestionsTableHeader">
 
@@ -37,8 +28,9 @@
                     </tr>
                 </thead>
                 <tbody id="doNotModifyThisId_QuestionsTableBody">
+
                         {% for question in questions %}
-                                <tr>
+                                <tr class="header">
                                     <td class="row">{{ question['title'] }}</td>
                                     <td class="row">{{ question['description'] }}</td>
                                     <td class="row">{{ question['vote_number'] }}</td>
