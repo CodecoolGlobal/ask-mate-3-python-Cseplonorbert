@@ -5,45 +5,47 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <br>
+    <table id="users">
         <tr>
-        <th>User ID</th><th>User e-mail</th><th>Reg.date</th><th>No. of asked questions</th>
-            <th>No. of answers</th><th>No. of comments</th><th>Reputation</th>
+        <th>User ID</th><th>User e-mail</th><th>Reg.date</th><th>No. questions</th>
+            <th>No. answers</th><th>No. comments</th><th>Reputation</th>
         </tr>
         <tr>
             <td>{{ user_data['id'] }}</td>
-            <td><a href="{{ url_for('get_user_page', user_id=user['user_id']) }}">{{ user_data['email'] }}</a></td>
+            <td>{{ user_data['email'] }}</td>
             <td>{{ user_data['submission_time'] }}</td>
-            <td>{{ number_of_related_questions }}</td>
-            <td>{{ number_of_related_answers }}</td>
-            <td>{{ number_of_related_comments }}</td>
+            <td>{{ number_of_related_questions['count'] }}</td>
+            <td>{{ number_of_related_answers['count'] }}</td>
+            <td>{{ number_of_related_comments['count'] }}</td>
             <td>{{ user_data['reputation'] }}</td>
         </tr>
     </table>
 
-    <table>
+    <table id="users">
         <tr>
-            <th>Submission time</th><th>View number</th><th>Vote number</th><th>Title</th>
-            <th>Question</th><th>Image</th>
+            <th>Question</th><th>Submission time</th><th>View number</th><th>Vote number</th>
         </tr>
         {% for question in related_questions %}
         <tr>
-            <td>{{ question['submission_time'] }}</td><td>{{ question['view_number'] }}</td>
-            <td>{{ question['vote_number'] }}</td><td>{{ question['title'] }}</td>
-            <td></td>{{ question['message'] }}<td>{{ question['image'] }}</td>
+            <td><a href="{{ url_for('increase_view', question_id=question["id"]) }}">{{ question['title'] }}</a></td>
+            <td>{{ question['submission_time'] }}</td>
+            <td>{{ question['view_number'] }}</td>
+            <td>{{ question['vote_number'] }}</td>
         </tr>
         {% endfor %}
     </table>
 
-    <table>
+    <table id="users">
         <tr>
-             <th>Submission time</th><th>Vote number</th><th>Answer</th><th>Image</th>
+             <th>Answer</th><th>Submission time</th><th>Vote number</th>
              <th>Accepted</th>
         </tr>
         {% for answer in related_answers %}
         <tr>
-            <td>{{ answer['submission_time'] }}</td><td>{{ answer['vote_number'] }}</td>
-            <td>{{ answer['message'] }}</td><td>{{ answer['image'] }}</td>
+            <td class="answer_link"><a href="{{ url_for('increase_view', question_id=answer['question_id']) }}">{{ answer['message'] }}</a></td>
+            <td>{{ answer['submission_time'] }}</td>
+            <td>{{ answer['vote_number'] }}</td>
             <td>
                 {% if answer['accepted'] %}
                     Yes
@@ -55,7 +57,7 @@
         {% endfor %}
     </table>
 
-    <table>
+    <table id="users">
         <tr>
             <th>Comment</th><th>Submission time</th><th>Edited(times)</th>
         </tr>
@@ -68,4 +70,5 @@
 
     </table>
 
+    <br>
 {% endblock %}
