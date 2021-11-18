@@ -5,28 +5,29 @@
 {% endblock %}
 
 {% block content %}
-    <br>
-    <br>
-    <br>
-    <br>
-
         <table class="table2">
             <tr>
                 <td class="td_title2">{{ question["title"] }}</td>
             </tr>
             <tr>
-                <td class="td_date">Asked: {{ question["submission_time"] }} Added by: {{ question['email'] }}</td>
+                <td class="td_date">Asked: {{ question["submission_time"] }}</td>
                 <td class="td_view">Viewed: {{ question["view_number"] }} times</td>
             </tr>
             <tr>
                 <br>
+                <td>Added by: {{ question['email'] }}</td>
             </tr>
         </table>
     <br>
 
     <table class="table3">
         <tr>
-            <td>{{ question["message"] }}</td>
+            <td class="td-center">
+                <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img src="{{ url_for('static', filename='images/upp_arrow.png') }}" alt="Vote up" style="width: 50px"></a><br>
+                {{ question['vote_number'] }}<br>
+                <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img src="{{ url_for('static', filename='images/down_arrow.png') }}" alt="Vote down" style="width: 50px"></a>
+            </td>
+            <td class="td_question_message">{{ question["message"] }}</td>
         </tr>
         {% if question["image"] %}
             <tr>
@@ -38,24 +39,12 @@
     <br>
     <table class="table4">
         <tr>
-            <td>
-                <form action='{{ url_for("question_vote_down", question_id=question["id"]) }}' method = 'GET' >
-                    <button type="submit"> vote down </button>
-                </form>
-            </td>
-            <td class="td-center">
-                Votes: {{ question['vote_number'] }}
-            </td>
             <td class="td-right">
-                <form action='{{ url_for("question_vote_up", question_id=question["id"]) }}' method = 'GET' >
-                    <button type="submit"> vote up </button>
-                </form>
+                {% if session['user_id'] == question['user_id'] %}
+                    <a href="{{ url_for('edit_question', question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/edit.png') }}" alt="Edit question" style="width: 20px;"></a>
+                <a href="{{ url_for('delete_question', question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/trash.png') }}" alt="Delete question" style="width: 20px;"></a>
+                {% endif %}
             </td>
-        </tr>
-        <tr>
-            <td><a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add new comment</a></td>
-            <td class="td-center"><a href="{{ url_for('edit_question', question_id=question['id']) }}">Edit question</a></td>
-            <td class="td-right"><a href="{{ url_for('delete_question', question_id=question['id']) }}">DELETE THIS QUESTION</a></td>
         </tr>
     </table>
     <table class="table5">
@@ -71,12 +60,18 @@
                     <tr>
                         <td class="td-tab"></td>
                         <td class="td-comment">Added: {{ comment["submission_time"] }} Added by: {{ comment['email'] }}</td>
-                        <td class="td-right-bottom-border">Edited {{ comment["edited_count"] }} times.</td>
-                        <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"> Edit comment</a></td>
-                        <td class="td-right-bottom-border"><a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}">Delete comment</a></td>
+                        {% if comment['user_id'] == session['user_id'] %}
+                        <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/edit.png') }}" alt="Edit comment" style="width: 20px;"></a>
+                        <a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/trash.png') }}" alt="Delete comment" style="width: 20px;"></a></td>
+                        {% endif %}
                     </tr>
                 {% endif %}
         {% endfor %}
+        <tr>
+            {% if 'email' in session %}
+            <td><a href="{{ url_for('add_question_comment', question_id=question['id']) }}">Add comment</a></td>
+            {% endif %}
+        </tr>
     </table>
     <table class="table3">
     <tr>
@@ -87,37 +82,33 @@
     </table>
     {% for answer in answers %}
         <table class="table3">
-        <tr>
-                <td>{{ answer["message"] }}</td>
+            <tr>
+                <td></td>
+                <td class="td_answer_data">Added {{ answer["submission_time"] }}, Added by: {{ answer['email'] }}</td>
+            </tr>
+            <tr>
+                <td class="td-center">
+                    <a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/upp_arrow.png') }}" alt="Vote up" style="width: 50px"></a><br>
+                    {{ answer["vote_number"] }}<br>
+                    <a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/down_arrow.png') }}" alt="Vote down" style="width: 50px"></a>
+                </td>
+                <td class="td_question_message">{{ answer["message"] }}</td>
             </tr>
             {% if answer["image"] %}
                 <tr>
                     <td class="td-center"><img src="{{ url_for('static', filename=answer['image']) }}" alt="{{ answer['image'] }}" style='width: 150px'></td>
                 </tr>
             {% endif %}
-            <tr>
-                <td>Date {{ answer["submission_time"] }} Added by: {{ answer['email'] }}</td>
-            </tr>
         </table>
         <table class="table3">
             <tr>
-                <td>
-                     <form action='{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=question['id']) }}' method = 'GET' >
-                        <button type="submit"> vote down </button>
-                    </form>
-                </td>
-                <td class="td-center">Votes: {{ answer["vote_number"] }}</td>
-                <td class="td-right">
-                    <form action='{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=question['id']) }}' method = 'GET' >
-                        <button type="submit"> vote up </button>
-                    </form>
-                </td>
+                <td></td>
+                {% if answer['user_id'] == session['user_id'] %}
+                <td class="td-right"><a href="{{ url_for('edit_answer', answer_id=answer['id'], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/edit.png') }}" alt="Edit answer" style="width: 20px;"></a>
+                <a href="{{ url_for('delete_answer', answer_id=answer['id'], question_id=answer['question_id']) }}"><img src="{{ url_for('static', filename='images/trash.png') }}" alt="Delete answer" style="width: 20px;"></a></td>
+                {% endif %}
             </tr>
-            <tr>
-                <td><a href="{{ url_for('edit_answer', answer_id=answer['id'], question_id=question['id']) }}">Edit answer</a></td>
-                <td class="td-center"><a href="{{ url_for('delete_answer', answer_id=answer['id'], question_id=answer['question_id']) }}">Delete answer</a></td>
-                <td class="td-right"><a href="{{ url_for('add_answer_comment', answer_id=answer['id'], question_id=question['id']) }}">Add answer comment</a></td>
-            </tr>
+
         </table>
 
         {% for comment in comments %}
@@ -129,14 +120,22 @@
                         </tr>
                         <tr>
                             <td class="td-tab"></td>
-                            <td class="td-comment">Added: {{ comment["submission_time"] }} Added by: {{ comment['email'] }}</td>
-                            <td class="td-right-bottom-border">Edited {{ comment["edited_count"] }} times.</td>
-                            <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"> Edit comment</a></td>
-                            <td class="td-right-bottom-border"><a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}">Delete comment</a></td>
+                        <td class="td-comment">Added: {{ comment["submission_time"] }} Added by: {{ comment['email'] }}</td>
+                        {% if comment['user_id'] == session['user_id'] %}
+                        <td class="td-right-bottom-border"><a href="{{ url_for('edit_comment', comment_id=comment['id'], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/edit.png') }}" alt="Edit comment" style="width: 20px;"></a>
+                        <a href="{{ url_for('delete_comment', comment_id=comment['id'], question_id=question['id']) }}"><img src="{{ url_for('static', filename='images/trash.png') }}" alt="Delete comment" style="width: 20px;"></a></td>
+                        {% endif %}
                         </tr>
                     {% endif %}
             </table>
         {% endfor %}
+        <table class="table3">
+            <tr>
+                {% if 'email' in session %}
+                <td><a href="{{ url_for('add_answer_comment', answer_id=answer['id'], question_id=question['id']) }}">Add comment</a></td>
+                {% endif %}
+            </tr>
+        </table>
         <table class="table5">
             <tr>
                 <td></td>
@@ -145,21 +144,20 @@
     {% endfor %}
     <br>
 
-<div class="form">
+{% if 'email' in session %}
+<div class="add_answer">
     <form action='{{ url_for("add_new_answer", question_id=question["id"]) }}' method='POST' enctype='multipart/form-data'>
 
         <label for='message-input' > Add new answer: </label><br>
         <textarea name='message' id='message-input' cols='30' rows='6' ></textarea><br>
-        <br>
-        <div class="custom-file">
+
             <label for="file">Upload image</label><br>
             <input type="file" name="image" class="form-control"><br>
             <br>
-        </div>>
 
-        <button tpye='submit' > Add new answer </button>
+        <input type="submit" value="Add new answer">
     </form>
 </div>
-    <br>
-    <br>
+{% endif %}
+
 {% endblock %}

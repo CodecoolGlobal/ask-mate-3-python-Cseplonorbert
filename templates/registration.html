@@ -4,23 +4,31 @@
 {% endblock %}
 {% block content %}
 
-    <br><br><br>
-
     <div class="container">
-    <form action="registration" method="post">
+    <form action="/registration" method="post">
 
         <h1>Register</h1>
         <p>Fill out this form to register!</p>
 
-        <label for="email"></label>
-        <input type="email" name="email" id="email" required placeholder="Enter email"><br><br>
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" required placeholder="Enter email">
 
-        <label for="password"></label>
-        <input type="password" name="password" id="password" required placeholder="Password"><br><br>
-
-        <input type="submit" value="Register">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required placeholder="Password">
+         <input type="checkbox" onclick="show_password()">Show Password
+        <input type="submit" value="Sign Up">
 
     </form>
     </div>
 
+    <script>
+        function show_password() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 {% endblock %}
