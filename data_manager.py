@@ -108,7 +108,8 @@ def answers_by_question_id(cursor, question_id):
        message,
        image,
        user_id,
-       users.email
+       users.email,
+       accepted
         FROM answer
         JOIN users ON answer.user_id = users.id
         WHERE question_id ='{question_id}' ORDER BY answer.submission_time"""
