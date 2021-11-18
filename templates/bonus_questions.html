@@ -2,7 +2,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
         <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
+        
     </head>
     <body>
         <h1>AskMate</h1>
@@ -23,13 +23,15 @@
             <form id="search-question">
                 <input type="text" placeholder="Search questions..." />
             </form>
-            <table>
+            <table id="sortMe" class="table">
                 <thead id="doNotModifyThisId_QuestionsTableHeader">
+
                     <tr>
-                        <td>Title</td>
-                        <td>Description</td>
-                        <td>Vote Count</td>
-                        <td>View Number</td>
+
+                        <th><button class="table__header">Title</button></th>
+                        <th><button class="table__header">Description</button></th>
+                        <th data-type="number"><button class="table__header">Vote Count</button></th>
+                        <th data-type="number"><button class="table__header">View Number</button></th>
                     </tr>
                 </thead>
                 <tbody id="doNotModifyThisId_QuestionsTableBody">
